@@ -10,25 +10,27 @@ public class Particle extends Sprite implements Runnable{
 		this.speed=speed;
 		this.stage=stage;
 	}
-	public int getDamage(){
+	
+	public int getDamage(){//return damge of particle
 		return this.damage;
 	}
 
-	protected void move(){
+	protected void move(){//move pea's xpos by 1
 		if(this.isActive){
 			this.xPos+=1;
 		}	
 	}
-	public void setStatus(){
+
+	public void setStatus(){//change the status of particle to be deleted
 		this.isActive=false;
 		stage.clearDeadParticle(this);
 	}
+
 	public synchronized boolean getStatus(){//para malaman kung buburahin na
 		return this.isActive;
 	}
-	public void colissionCheck(){
+	public void colissionCheck(){//check if zombie is hit
 		stage.particleZombieColissionCheck(this);
-
 	}
 	
 	@Override

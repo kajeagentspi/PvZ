@@ -1,32 +1,22 @@
-/*************************************************************************************************************************
- *
- * CMSC 22 2nd Semester SY 2016-1017
- * Multithreading Example (with GUI): Cart
- * 
- * (c) Institute of Computer Science, CAS, UPLB
- * @author Miyah Queliste
- *
- *************************************************************************************************************************/
 import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.*;
 
-/**********************************************************************************************
-* Sprite class which is a JPanel. 
-* Contains attributes and methods to render an object as a JPanel with image.
-***********************************************************************************************/
 public class Sprite extends JPanel {
+	protected final static int DAMAGE_NORMAL=1;
+	protected final static int DAMAGE_HEAVY=90;
+
+	protected final static int TOUGHNESS_NORMAL=5;
+	protected final static int TOUGHNESS_HIGH=80;
+	protected final static int TOUGHNESS_INFINITE=255;
+
 	protected Image img;
 	protected int xPos, yPos,height,width;
 	protected Rectangle rectangle;
 	protected boolean suspendFlag;
 
-	/**********************************************************************************************
-	* Sprite constructor.
-	* Initializes the attributes and loads the image for this sprite.
-	***********************************************************************************************/
 	public Sprite(int xPos, int yPos, int width, int height, String filename){
 		this.setSize(900,500);
 		this.xPos = xPos;
@@ -36,7 +26,6 @@ public class Sprite extends JPanel {
 		this.loadImage(filename);
 		this.rectangle=new Rectangle(xPos,yPos,width,height);
 		this.setOpaque(false);
-		this.suspendFlag=true;
 	}
 
 	private void loadImage(String filename){
@@ -77,10 +66,6 @@ public class Sprite extends JPanel {
 		return this.suspendFlag;
 	}
 
-	/**********************************************************************************************
-	* Overrides the paintComponent method of JPanel.
-	* Draws the image on its x and y coordinates.
-	***********************************************************************************************/
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);

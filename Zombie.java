@@ -8,8 +8,8 @@ public class Zombie extends Sprite implements Runnable{
 	public Zombie(int xPos, int yPos,Stage stage){
 		super(xPos, yPos,100, 100, "Zombie.gif");
 		this.isAlive=true;
-		this.hp=100;
-		this.damage=10;
+		this.hp=10;
+		this.damage=1;
 		this.speed=50;
 		this.stage=stage;
 	}

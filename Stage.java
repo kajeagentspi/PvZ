@@ -1,22 +1,11 @@
-/*************************************************************************************************************************
- *
- * CMSC 22 2nd Semester SY 2016-1017
- * Multithreading Example (with GUI): Cart
- * 
- * (c) Institute of Computer Science, CAS, UPLB
- * @author Miyah Queliste
- *
- *************************************************************************************************************************/
+
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.*;
 import java.util.ArrayList;
-/**********************************************************************************************
-* Stage class which is a JPanel. 
-* Contains the Cart objects that will race.
-***********************************************************************************************/
+
 public class Stage extends JPanel{
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
@@ -38,11 +27,15 @@ public class Stage extends JPanel{
 		zombieThreads=new ArrayList<Thread>();
 		plantThreads=new ArrayList<Thread>();
 		
-		// this.addParticle(new Pea(50,332));
-		this.addPlant(new PeaShooter(0,0,this));
-		this.addPlant(new PeaShooter(100,0,this));
-		this.addPlant(new PeaShooter(700,0,this));
-		this.addPlant(new PeaShooter(0,100,this));
+		// this.addPlant(new PeaShooter(100,0,this));
+		this.addPlant(new SnowPea(0,0,this));
+
+		this.addZombie(new Zombie(450,300,this));
+		this.addPlant(new CherryBomb(300,300,this));
+
+
+		this.addPlant(new WallNut(700,0,this));
+		// this.addPlant(new PeaShooter(0,100,this));
 		this.addZombie(new Zombie(900,0,this));
 		this.addZombie(new Zombie(900,100,this));
 		this.addZombie(new Zombie(1000,0,this));

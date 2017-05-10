@@ -1,12 +1,3 @@
-/*************************************************************************************************************************
- *
- * CMSC 22 2nd Semester SY 2016-1017
- * Multithreading Example (with GUI): Cart
- * 
- * (c) Institute of Computer Science, CAS, UPLB
- * @author Miyah Queliste
- *
- *************************************************************************************************************************/
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Container;
@@ -15,10 +6,6 @@ import java.util.*;
 import java.awt.event.*;
 
 
-/**********************************************************************************************
-* MyFrame class which is a JFrame. 
-* The window that contains the Stage object (where the Cart instances will race).
-***********************************************************************************************/
 public class MyFrame extends JFrame {
 	
 	public MyFrame (){
@@ -50,7 +37,7 @@ public class MyFrame extends JFrame {
 				}
 			}
 		});
-		plause.setBounds(50,100,95,30);
+		plause.setBounds(50,100,95,30);//set the size of button plause
 		//END
 		gbc.gridy++;
       	gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -60,8 +47,6 @@ public class MyFrame extends JFrame {
 		gbc.anchor=GridBagConstraints.FIRST_LINE_END;
 		container.add(plause,gbc);
 		
-
-		// container.setBackground(Color.GREEN);
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

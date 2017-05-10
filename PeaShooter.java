@@ -1,6 +1,6 @@
-class PeaShooter extends Plant implements Runnable{
+public class PeaShooter extends Plant implements Runnable{
 	public PeaShooter(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,96,99,"PeaShooter.gif",stage,100);
+		super(xPos,yPos,96,99,"PeaShooter.gif",stage,TOUGHNESS_NORMAL);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
 		this.actionSpd=1500;
 	}
 
@@ -12,7 +12,6 @@ class PeaShooter extends Plant implements Runnable{
 	@Override
 	public void run(){
 		while(this.isAlive){
-			// this.updateRectangle();
 			try{
 				synchronized(this){
 					while(this.suspendFlag){
@@ -22,7 +21,6 @@ class PeaShooter extends Plant implements Runnable{
 			}catch (InterruptedException e){}
 			this.shoot();
 			try {
-					// this.repaint();
 				Thread.sleep(this.actionSpd);
 			}catch (Exception e){}
 		}

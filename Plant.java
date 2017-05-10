@@ -10,11 +10,11 @@ public abstract class Plant extends Sprite implements Runnable{
 		this.hp=hp;
 	}
 
-	public int getHP(){
+	public int getHP(){//returns hp
 		return this.hp;
 	}
 
-	public void setHP(int dmg){
+	public void setHP(int dmg){//sets damage
 		this.hp-=dmg;
 		System.out.println("P HP: "+this.hp);
 		if(this.hp<=0){
@@ -32,6 +32,5 @@ public abstract class Plant extends Sprite implements Runnable{
 	public int getActionSpd(){
 		return this.actionSpd;
 	}
-	public abstract void shoot();
 	
 }
