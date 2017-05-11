@@ -26,11 +26,13 @@ public class MyFrame extends JFrame {
 		JButton plause=new JButton("Pause");
 		plause.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(stage.getStatus()){
+				plause.setFocusable(false);
+				if(!stage.getStatus()){
 					stage.setStatus();
 					stage.pause();
 					plause.setText("Resume");
-				}else{
+				}
+				else if(stage.getStatus()){
 					stage.setStatus();
 					stage.resume();
 					plause.setText("Pause");
@@ -46,7 +48,7 @@ public class MyFrame extends JFrame {
 		container.add(pboard,gbc);
 		gbc.anchor=GridBagConstraints.FIRST_LINE_END;
 		container.add(plause,gbc);
-		
+		this.setFocusable(true);
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

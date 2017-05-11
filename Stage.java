@@ -51,7 +51,6 @@ public class Stage extends JPanel{
 		this.plantList.add(plant);
 		Thread threadTemp=new Thread(plant);
 		this.add(plant);
-		Toolkit.getDefaultToolkit().sync();
 		threadTemp.start();
 		this.plantThreads.add(threadTemp);
 	}
@@ -60,7 +59,6 @@ public class Stage extends JPanel{
 		this.particleList.add(particle);
 		Thread threadTemp=new Thread(particle);
 		this.add(particle);
-		Toolkit.getDefaultToolkit().sync();
 		threadTemp.start();
 		this.particleThreads.add(threadTemp);
 	}
@@ -69,10 +67,8 @@ public class Stage extends JPanel{
 		this.zombieList.add(zombie);
 		Thread threadTemp=new Thread(zombie);
 		this.add(zombie);
-		Toolkit.getDefaultToolkit().sync();
 		threadTemp.start();
 		this.zombieThreads.add(threadTemp);
-
 	}
 
 	public boolean zombieCheck(int xPos,int yPos){
