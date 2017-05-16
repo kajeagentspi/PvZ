@@ -1,9 +1,11 @@
-
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Stage extends JPanel{
@@ -15,10 +17,9 @@ public class Stage extends JPanel{
 	private ArrayList<Thread> plantThreads;
 	private boolean isPaused;
 	private int timer;
-
+	private Image background;
 	public Stage(){
 		this.setLayout(null);
-		this.setOpaque(true);
 		this.isPaused=false;
 		particleList=new ArrayList<Particle>();
 		zombieList=new ArrayList<Zombie>();
@@ -26,25 +27,16 @@ public class Stage extends JPanel{
 		particleThreads=new ArrayList<Thread>();
 		zombieThreads=new ArrayList<Thread>();
 		plantThreads=new ArrayList<Thread>();
-		
-		// this.addPlant(new PeaShooter(100,0,this));
-		this.addPlant(new SnowPea(0,0,this));
-
+		this.addPlant(new PeaShooter(100,100,this));
 		this.addZombie(new Zombie(450,300,this));
 		this.addPlant(new CherryBomb(300,300,this));
-
-
-		this.addPlant(new WallNut(700,0,this));
-		// this.addPlant(new PeaShooter(0,100,this));
-		this.addZombie(new Zombie(900,0,this));
+		try{
+			this.background = ImageIO.read(new File("11.png"));//background image
+		}catch(Exception e){}
+		this.addPlant(new WallNut(700,100,this));
 		this.addZombie(new Zombie(900,100,this));
-		this.addZombie(new Zombie(1000,0,this));
-
-
-
-		this.setBackground(Color.GREEN);
-		this.setPreferredSize(new Dimension(900, 500));
-	  	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.setPreferredSize(new Dimension(1000, 600));
+		
 	}
 
 	public void addPlant(Plant plant){
@@ -102,55 +94,20 @@ public class Stage extends JPanel{
 			}
 		}return null;
 	}
-
-
 	public void clearDeadZombie(Zombie zombie){
 		this.remove(zombie);
 		this.zombieList.remove(zombie);
 		this.repaint();
-
-		// if(zombieList.size()!=0){
-		// 	for(int i=this.zombieList.size()-1;i>=0;i-=1){
-		// 		if(!this.zombieList.get(i).getStatus()){
-		// 			this.remove(zombieList.get(i));
-		// 			this.zombieThreads.remove(i);
-		// 			this.zombieList.remove(i);
-		// 			this.repaint();
-		// 		}
-		// 	}
-		// }
 	}
 	public void clearDeadParticle(Particle particle){
 		this.remove(particle);
 		this.particleList.remove(particle);
 		this.repaint();
-
-		// if(particleList.size()!=0){
-		// 	for(int i=this.particleList.size()-1;i>=0;i-=1){
-		// 		if(!this.particleList.get(i).getStatus()){
-		// 			this.remove(particleList.get(i));
-		// 			this.particleThreads.remove(i);
-		// 			this.particleList.remove(i);
-		// 			this.repaint();
-		// 		}
-		// 	}
-		// }
 	}
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
 		this.plantList.remove(plant);
 		this.repaint();
-
-		// if(plantList.size()!=0){
-		// 	for(int i=this.plantList.size()-1;i>=0;i-=1){
-		// 		if(!this.plantList.get(i).getStatus()){
-		// 			this.remove(plantList.get(i));
-		// 			this.plantThreads.remove(i);
-		// 			this.plantList.remove(i);
-		// 			this.repaint();
-		// 		}	
-		// 	}
-		// }
 	}
 		
 	public void pause(){
@@ -189,15 +146,21 @@ public class Stage extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.drawImage(background, 0, 0, null);//backgroundimage
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setPaint(Color.GRAY);
-		for (int i = 1; i < 9; i++) {
-		   int x = i * 100;
-		   g2.drawLine(x, 0, x, getSize().height);
+		//temporary
+		// g2.setPaint(Color.GRAY);
+		for (int i = 1; i < 10; i++) {
+			if(true){
+				int x = i * 100;
+				g2.drawLine(x, 0, x, getSize().height);
+			}
 		}
-		for (int i = 1; i < 5; i++) {
-		   int y = i * 100;
-		   g2.drawLine(0, y, getSize().width, y);
+		for (int i = 1; i < 6; i++) {
+			if(true){
+				int y = i * 100;
+				g2.drawLine(0, y, getSize().width, y);
+			}
 		}
 	}
 }

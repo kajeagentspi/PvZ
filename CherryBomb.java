@@ -24,12 +24,11 @@ public class CherryBomb extends Plant implements Runnable{
 					}
 				}
 			}catch (InterruptedException e){}
-			
+			this.shoot();
 			try {
 				Thread.sleep(this.actionSpd);
 
 			}catch (Exception e){}
-			this.shoot();
 		}
 		
 	}

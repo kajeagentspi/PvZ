@@ -6,20 +6,20 @@ public class Zombie extends Sprite implements Runnable{
 	protected boolean isEating;
 	protected Stage stage;
 	public Zombie(int xPos, int yPos,Stage stage){
-		super(xPos, yPos,100, 100, "Zombie.gif");
+		super(xPos, yPos,100, 100, "spriterun.png");
 		this.isAlive=true;
 		this.hp=10;
 		this.damage=1;
 		this.speed=50;
 		this.stage=stage;
 	}
-	public Zombie(int xPos,int yPos, int width,int height, String filename, int damage,int speed, int hp){
-		super(xPos, yPos,width, height, filename);
-		this.isAlive=true;
-		this.hp=hp;
-		this.damage=damage;
-		this.speed=speed;
-	}
+	// public Zombie(int xPos,int yPos, int width,int height, String filename, int damage,int speed, int hp){
+	// 	super(xPos, yPos,width, height, filename);
+	// 	this.isAlive=true;
+	// 	this.hp=hp;
+	// 	this.damage=damage;
+	// 	this.speed=speed;
+	// }
 	private void move(){
 		if(this.isAlive){
 			this.xPos-=1;
