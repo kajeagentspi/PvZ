@@ -38,7 +38,7 @@ public class Particle extends Sprite implements Runnable{
 		while(this.isActive){
 			this.updateRectangle();
 			this.colissionCheck();
-			if(this.xPos>this.width+900){
+			if(this.xPos>this.width+1000){
 				this.setStatus();
 			}	
 			this.move();

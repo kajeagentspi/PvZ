@@ -14,7 +14,7 @@ public class Sprite extends JPanel {
 	protected final static int TOUGHNESS_HIGH=80;
 	protected final static int TOUGHNESS_INFINITE=255;
 
-	protected BufferedImage  img;
+	protected Image  img;
 	protected int xPos, yPos,height,width;
 	protected Rectangle rectangle;
 	protected boolean suspendFlag;
@@ -32,11 +32,13 @@ public class Sprite extends JPanel {
 
 	private void loadImage(String filename){
 		try{
-			img = ImageIO.read(new File(filename));
+			img = Toolkit.getDefaultToolkit().getImage(filename);
+			
+			// img = ImageIO.read(new File(filename));
 		} catch(Exception e){}	
 	}
 
-	public BufferedImage  getImage(){
+	public Image  getImage(){
 		return this.img;
 	}
 

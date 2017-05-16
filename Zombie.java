@@ -6,7 +6,7 @@ public class Zombie extends Sprite implements Runnable{
 	protected boolean isEating;
 	protected Stage stage;
 	public Zombie(int xPos, int yPos,Stage stage){
-		super(xPos, yPos,100, 100, "spriterun.png");
+		super(xPos, yPos,100, 100, "Zombie.gif");
 		this.isAlive=true;
 		this.hp=10;
 		this.damage=1;

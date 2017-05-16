@@ -12,7 +12,7 @@ import java.net.URL;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
-public class Stage extends JPanel{
+public class Stage extends JPanel implements Runnable{
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
@@ -37,6 +37,7 @@ public class Stage extends JPanel{
 		plantThreads=new ArrayList<Thread>();
 		this.addPlant(new PeaShooter(100,100,this));
 		this.addZombie(new Zombie(450,300,this));
+		this.addZombie(new Zombie(900,100,this));
 		this.addPlant(new CherryBomb(300,300,this));
 		try{
 			this.background = ImageIO.read(new File("11.png"));//background image
@@ -45,8 +46,8 @@ public class Stage extends JPanel{
             this.clip = AudioSystem.getClip();
             this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
-		this.addPlant(new WallNut(700,100,this));
-		this.addZombie(new Zombie(900,100,this));
+		// this.addPlant(new WallNut(700,200,this));
+		this.addZombie(new Zombie(900,200,this));
 		this.setPreferredSize(new Dimension(1000, 600));
         this.playBG(this.clip); // for sound
         
@@ -94,7 +95,7 @@ public class Stage extends JPanel{
 				if(particle.getRectangle().intersects(zombieList.get(i).getRectangle())){
 					zombieList.get(i).damaged(particle.getDamage());
 					particle.setStatus();
-					this.repaint();
+					
 					break;
 				}
 			}
@@ -113,17 +114,17 @@ public class Stage extends JPanel{
 	public void clearDeadZombie(Zombie zombie){
 		this.remove(zombie);
 		this.zombieList.remove(zombie);
-		this.repaint();
+		
 	}
 	public void clearDeadParticle(Particle particle){
 		this.remove(particle);
 		this.particleList.remove(particle);
-		this.repaint();
+		
 	}
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
 		this.plantList.remove(plant);
-		this.repaint();
+		
 	}
 		
 	public void pause(){
@@ -185,6 +186,12 @@ public class Stage extends JPanel{
 				int y = i * 100;
 				g2.drawLine(0, y, getSize().width, y);
 			}
+		}
+	}
+	@Override
+	public void run(){
+		while(true){
+			this.repaint();
 		}
 	}
 }

@@ -39,5 +39,7 @@ public class MyFrame extends JFrame {
 	    	}
 			public void keyReleased(KeyEvent e) {}
 		});
+		Thread thread=new Thread(stage);
+		thread.start();
 	}
 }
