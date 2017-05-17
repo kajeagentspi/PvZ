@@ -1,8 +1,16 @@
+import java.net.URL;
+import javax.swing.*;
+import javax.sound.sampled.*;
+
 public abstract class Plant extends Sprite implements Runnable{
 	protected int hp;
 	protected int actionSpd;
 	protected Stage stage;
 	protected boolean isAlive;
+    // for sound
+    protected URL url;
+    protected Clip clip;
+    protected AudioInputStream ais;
 	public Plant(int xPos, int yPos,int width,int height, String filename,Stage stage,int hp){
 		super(xPos,yPos,width,height,filename);
 		this.stage=stage;
