@@ -1,9 +1,6 @@
-import java.io.File;
+import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -12,20 +9,22 @@ import java.net.URL;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
-public class Stage extends JPanel implements Runnable{
+public class Stage extends JPanel implements Runnable, Serializable{
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
 	private ArrayList<Thread> particleThreads;
 	private ArrayList<Thread> zombieThreads;
 	private ArrayList<Thread> plantThreads;
+	private int[][] spaceArray;
 	private boolean isPaused;
 	private int timer;
-    
-    private URL url;
-    private Clip clip;
-    private AudioInputStream ais;
+	
+	private URL url;
+	private Clip clip;
+	private AudioInputStream ais;
 	private Image background;
+	private long clipTime;
 	public Stage(){
 		this.setLayout(null);
 		this.isPaused=false;
@@ -35,25 +34,21 @@ public class Stage extends JPanel implements Runnable{
 		particleThreads=new ArrayList<Thread>();
 		zombieThreads=new ArrayList<Thread>();
 		plantThreads=new ArrayList<Thread>();
-		this.addPlant(new PeaShooter(100,100,this));
 		this.addZombie(new Zombie(450,300,this));
 		this.addZombie(new Zombie(900,100,this));
-		this.addPlant(new CherryBomb(300,300,this));
 		try{
 			this.background = ImageIO.read(new File("11.png"));//background image
-             // for sound
-            this.url = new URL("file:audio/pvzBG1.wav");
-            this.clip = AudioSystem.getClip();
-            this.ais = AudioSystem.getAudioInputStream(this.url);   
+			 // for sound
+			this.url = new URL("file:audio/pvzBG1.wav");
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
 		// this.addPlant(new WallNut(700,200,this));
 		this.addZombie(new Zombie(900,200,this));
-		this.setPreferredSize(new Dimension(1000, 600));
-        this.playBG(this.clip); // for sound
-        
-    
-            
-		
+		this.setPreferredSize(new Dimension(1000, 500));
+		this.playBG(this.clip); // for sound
+		this.spaceArray=new int[5][10];
+
 	}
 
 	public void addPlant(Plant plant){
@@ -62,6 +57,9 @@ public class Stage extends JPanel implements Runnable{
 		this.add(plant);
 		threadTemp.start();
 		this.plantThreads.add(threadTemp);
+		//FIX DOUBLE PLANTS
+		this.spaceArray[plant.getYPos()/100][plant.getXPos()/100]=1;
+		System.out.println("Plant added");
 	}
 
 	public void addParticle(Particle particle){
@@ -95,7 +93,6 @@ public class Stage extends JPanel implements Runnable{
 				if(particle.getRectangle().intersects(zombieList.get(i).getRectangle())){
 					zombieList.get(i).damaged(particle.getDamage());
 					particle.setStatus();
-					
 					break;
 				}
 			}
@@ -134,7 +131,8 @@ public class Stage extends JPanel implements Runnable{
 			particleList.get(i).pause();
 		}for(int i=0;i<plantList.size();i+=1){
 			plantList.get(i).pause();
-		}
+		}this.clipTime= this.clip.getMicrosecondPosition();
+		this.clip.stop();
 	}
 
 	public void resume(){
@@ -144,7 +142,8 @@ public class Stage extends JPanel implements Runnable{
 			particleList.get(i).resume();
 		}for(int i=0;i<plantList.size();i+=1){
 			plantList.get(i).resume();
-		}
+		}this.clip.setMicrosecondPosition(this.clipTime);
+		this.clip.start();
 	}
 
 	public boolean getStatus(){
@@ -160,14 +159,23 @@ public class Stage extends JPanel implements Runnable{
 	public ArrayList<Zombie> getZombieList(){
 		return this.zombieList;
 	}
-    
-    public void playBG(Clip clip) {
-        try {
-            clip.open(this.ais); 
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch(Exception e) {}
-         
-    }
+	
+	public void playBG(Clip clip) {
+		try {
+			clip.open(this.ais); 
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch(Exception e) {}
+		 
+	}
+	//FIX DOUBLE PLANTS
+	public boolean checkSpace(int row,int col){
+		System.out.println("C: "+row+"col: "+col);
+		System.out.println("xxxxxx:"+this.spaceArray[row][col]);
+		if(this.spaceArray[row][col]!=0)
+			return false;
+		else
+			return true;
+	}
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -181,7 +189,7 @@ public class Stage extends JPanel implements Runnable{
 				g2.drawLine(x, 0, x, getSize().height);
 			}
 		}
-		for (int i = 1; i < 6; i++) {
+		for (int i = 1; i < 5; i++) {
 			if(true){
 				int y = i * 100;
 				g2.drawLine(0, y, getSize().width, y);
@@ -191,7 +199,8 @@ public class Stage extends JPanel implements Runnable{
 	@Override
 	public void run(){
 		while(true){
-			this.repaint();
+			if(!this.isPaused)
+				this.repaint();
 		}
 	}
 }

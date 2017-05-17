@@ -1,8 +1,6 @@
 import java.net.URL;
 import javax.swing.*;
 import javax.sound.sampled.*;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 
 public class PeaShooter extends Plant implements Runnable{
 	public PeaShooter(int xPos, int yPos, Stage stage){
@@ -28,18 +26,7 @@ public class PeaShooter extends Plant implements Runnable{
             
 	}
     
-    public void soundComponent(Clip clip) {
-        try {
-            if(clip.isRunning()){
-            	clip.stop();
-			}
-			clip.setFramePosition(0);
-        	clip.start();
-        }   catch(Exception e) {
-        	System.out.println(e);
-        }
-
-    }
+    
 
 	@Override
 	public void run(){

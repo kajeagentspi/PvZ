@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
+import javax.sound.sampled.*;
+
 
 public class Sprite extends JPanel {
 	protected final static int DAMAGE_NORMAL=1;
@@ -69,6 +71,18 @@ public class Sprite extends JPanel {
 	public boolean getSuspendFlag(){
 		return this.suspendFlag;
 	}
+	public void soundComponent(Clip clip) {
+        try {
+            if(clip.isRunning()){
+            	clip.stop();
+			}
+			clip.setFramePosition(0);
+        	clip.start();
+        }   catch(Exception e) {
+        	System.out.println(e);
+        }
+
+    }
 
 	@Override
 	public void paintComponent(Graphics g){
