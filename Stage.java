@@ -42,7 +42,7 @@ public class Stage extends JPanel implements Runnable{
 		try{
 			this.background = ImageIO.read(new File("11.png"));//background image
              // for sound
-            this.url = new URL("/Users/allenoponcedeleon/Documents/PvZ/pvzBG1.wav");
+            this.url = new URL("file:audio/pvzBG1.wav");
             this.clip = AudioSystem.getClip();
             this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
