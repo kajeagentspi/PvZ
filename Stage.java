@@ -7,10 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
- // for sounds
-import java.net.URL;
-import javax.swing.*;
-import javax.sound.sampled.*;
 
 public class Stage extends JPanel implements Runnable{
 	private ArrayList<Particle> particleList;
@@ -21,10 +17,6 @@ public class Stage extends JPanel implements Runnable{
 	private ArrayList<Thread> plantThreads;
 	private boolean isPaused;
 	private int timer;
-    
-    private URL url;
-    private Clip clip;
-    private AudioInputStream ais;
 	private Image background;
 	public Stage(){
 		this.setLayout(null);
@@ -41,18 +33,10 @@ public class Stage extends JPanel implements Runnable{
 		this.addPlant(new CherryBomb(300,300,this));
 		try{
 			this.background = ImageIO.read(new File("11.png"));//background image
-             // for sound
-            this.url = new URL("/Users/allenoponcedeleon/Documents/PvZ/pvzBG1.wav");
-            this.clip = AudioSystem.getClip();
-            this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
 		// this.addPlant(new WallNut(700,200,this));
 		this.addZombie(new Zombie(900,200,this));
 		this.setPreferredSize(new Dimension(1000, 600));
-        this.playBG(this.clip); // for sound
-        
-    
-            
 		
 	}
 
@@ -160,14 +144,6 @@ public class Stage extends JPanel implements Runnable{
 	public ArrayList<Zombie> getZombieList(){
 		return this.zombieList;
 	}
-    
-    public void playBG(Clip clip) {
-        try {
-            clip.open(this.ais); 
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch(Exception e) {}
-         
-    }
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
