@@ -1,7 +1,11 @@
+package pvz;
 import java.awt.Rectangle;
-public class CherryBomb extends Plant implements Runnable{
+import java.net.*;
+import java.io.Serializable;
+
+public class CherryBomb extends Plant implements Runnable, Serializable{
 	public CherryBomb(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,96,99,"CherryBomb.png",stage,TOUGHNESS_INFINITE);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
+		super(xPos,yPos,96,99,"sprites/plants/CherryBomb.gif",stage,TOUGHNESS_INFINITE);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
 		this.actionSpd=1500;
 	}
 

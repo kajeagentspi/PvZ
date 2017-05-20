@@ -1,6 +1,11 @@
-public class WallNut extends Plant implements Runnable{
+package pvz;
+import java.net.*;
+import java.io.Serializable;
+
+
+public class WallNut extends Plant implements Runnable, Serializable{
 	public WallNut(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,96,99,"WallNut.gif",stage,TOUGHNESS_HIGH);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
+		super(xPos,yPos,96,99,"sprites/plants/WallNut.gif",stage,TOUGHNESS_HIGH);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
 	}
 
 	@Override

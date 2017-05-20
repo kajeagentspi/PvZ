@@ -1,5 +1,5 @@
 @echo off
-
-javac -d . *java
-
+dir /s /B *.java > sources.txt 
+javac @sources.txt
 java Main
+PAUSE
