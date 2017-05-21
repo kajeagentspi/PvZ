@@ -3,6 +3,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
+
 class Menu extends JPanel{
 	private JButton newgame;
 	private JButton loadgame;
@@ -57,34 +60,58 @@ class Menu extends JPanel{
 		thread.start();
 	}
 	public void loadGame(){
-		//load
 		this.game=new GamePanel(this);
-		try{
-			ObjectInputStream in=new ObjectInputStream(new FileInputStream("save.pvz"));
-			game=(GamePanel)in.readObject();
-			in.close();
-		}catch(Exception e){
-			System.out.println(e);
-			System.out.println("Error loading");
-		}
+		this.game.requestFocus();
 		frame.getContainer().add(this.game,"second");
+		try{
+			FileInputStream fis = new FileInputStream("plant.sav");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			ArrayList<PlantVar> plantvarList=new ArrayList<PlantVar>();
+			ArrayList<?> objectList = (ArrayList<?>) ois.readObject();
+			if (objectList.size()>0){
+				for(int i=0;i<objectList.size();i+=1){
+					Object o=objectList.get(i);
+					if(o instanceof PlantVar){
+						plantvarList.add((PlantVar)o);
+					}
+				}
+			}
+			for(int i=0;i<plantvarList.size();i+=1){
+				if(plantvarList.get(i).getType().equals("PeaShooter")){
+					game.getStage().addPlant(new PeaShooter(plantvarList.get(i),game.getStage()));
+				}else if(plantvarList.get(i).getType().equals("CherryBomb")){
+					game.getStage().addPlant(new CherryBomb(plantvarList.get(i),game.getStage()));
+				}else if(plantvarList.get(i).getType().equals("WallNut")){
+					game.getStage().addPlant(new WallNut(plantvarList.get(i),game.getStage()));
+				}else if(plantvarList.get(i).getType().equals("SnowPea")){
+					game.getStage().addPlant(new SnowPea(plantvarList.get(i),game.getStage()));
+				}
+				game.getStage().resume();
+
+			}
+			ois.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		Thread thread=new Thread(this.game.getStage());
 		thread.start();
 
-		//insert animation shits
-		game.getStage().resetnotQuit();
-		game.getStage().resume();
 	}
 	public void quitGame(){
 		System.exit(0);
 	}
 	public void saveGame(){
+		ArrayList<PlantVar> plantvarList=new ArrayList<PlantVar>();
+		for(int i=0;i<this.game.getStage().getPlantList().size();i+=1){
+			plantvarList.add(this.game.getStage().getPlantList().get(i).getPlantVar());
+		}
 		try{
-			ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream("save.pvz"));
-			out.writeObject(this.game);
-			out.close();
-		}catch(Exception e){}
+			FileOutputStream fos = new FileOutputStream("plant.sav");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(plantvarList);
+			oos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-	
-
 }

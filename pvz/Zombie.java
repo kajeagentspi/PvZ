@@ -56,7 +56,9 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 		if(plantList.size()!=0){
 			for(int i=0;i<plantList.size();i+=1){
 				if(this.getRectangle().intersects(plantList.get(i).getRectangle())&&this.getStatus()){
-					return plantList.get(i);
+					if(this.xPos>plantList.get(i).getXPos()+25){
+						return plantList.get(i);
+					}
 				}
 			}
 		}return null;

@@ -20,30 +20,37 @@ public class Sprite extends JPanel implements Serializable{
 	protected final static int TOUGHNESS_NORMAL=5;
 	protected final static int TOUGHNESS_HIGH=80;
 	protected final static int TOUGHNESS_INFINITE=255;
-
-	protected Image  img;
 	protected int xPos, yPos,height,width;
 	protected Rectangle rectangle;
 	protected boolean suspendFlag;
+	protected String location;
+	protected Image image;
 	public Sprite(int xPos, int yPos, int width, int height, String location){
 		this.setSize(1000,500);
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.height=height;
 		this.width=width;
-		this.loadImage(location);
+		this.location=location;
+		this.image=this.loadImage(location);
 		this.rectangle=new Rectangle(xPos,yPos,width,height);
 		this.setOpaque(false);
 	}
 
-	private void loadImage(String location){
+	private Image loadImage(String location){
 		try{
-			img = Toolkit.getDefaultToolkit().getImage(new URL("file:"+location));
+			return Toolkit.getDefaultToolkit().getImage(new URL("file:"+location));
 		} catch(Exception e){}	
+		return null;
 	}
-
-	public Image  getImage(){
-		return this.img;
+	public void changeIcon(String location){
+		this.location=location;
+		try{
+			this.image=Toolkit.getDefaultToolkit().getImage(new URL("file:"+location));
+		}catch(Exception e){}
+	}
+	public Image getImage(){
+		return this.image;
 	}
 
 	public int getXPos(){
@@ -60,9 +67,7 @@ public class Sprite extends JPanel implements Serializable{
 		this.rectangle=new Rectangle(this.xPos,this.yPos,width,height);
 	}
 
-	public void changeIcon(String location){
-		this.loadImage(location);
-	}
+	
 	public synchronized void pause(){
 		this.suspendFlag = true;
 	}

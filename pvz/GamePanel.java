@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.awt.event.*;
 
-public class GamePanel extends JPanel implements Serializable{
+public class GamePanel extends JPanel{
 	private Stage stage;
 	private PlantBoard pboard;
 	private int mxPos;
@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements Serializable{
 				int col=mxPos/100;
 				row-=1;
 				if(row>=0){
-					Plant plant=new SnowPea(col*100,row*100,stage);
+					Plant plant=new PeaShooter(col*100,row*100,stage);
 					if(stage.checkSpace(plant)&&!stage.getStatus()){
 						System.out.println("Plant added");
 						stage.addPlant(plant);

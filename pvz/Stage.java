@@ -12,7 +12,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
-public class Stage extends JPanel implements Runnable, Serializable{
+public class Stage extends JPanel implements Runnable{
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
@@ -22,9 +22,10 @@ public class Stage extends JPanel implements Runnable, Serializable{
 	private boolean isPaused;
 	private int timer;
 	
-	private URL url;
-	private Clip clip;
-	private AudioInputStream ais;
+	private transient URL url;
+	private transient Clip clip;
+	private transient AudioInputStream ais;
+	private transient Thread threadTemp;
 	private Image background;
 	private long clipTime;
 	private boolean notDead;
@@ -40,28 +41,33 @@ public class Stage extends JPanel implements Runnable, Serializable{
 		particleThreads=new ArrayList<Thread>();
 		zombieThreads=new ArrayList<Thread>();
 		plantThreads=new ArrayList<Thread>();
-		this.addZombie(new Zombie(1100,0,this));
-		this.addZombie(new Zombie(1100,100,this));
-		this.addZombie(new Zombie(1100,400,this));
+		this.addZombie(new Zombie(1000,100,this));
+		this.addZombie(new Zombie(1000,200,this));
+		this.addZombie(new Zombie(1000,400,this));
 
 
 		try{
-			this.background = ImageIO.read(new URL("file:sprites/menus/backdrop.png"));//background image
-			 // for sound
+			// for sound
 			this.url = new URL("file:audio/pvzBG1.wav");
 			this.clip = AudioSystem.getClip();
 			this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
-		Thread threadZCreator=new Thread(new ZombieCreator(this));
-		threadZCreator.start();
+		// Thread threadZCreator=new Thread(new ZombieCreator(this));
+		// threadZCreator.start();
 		this.setPreferredSize(new Dimension(1000, 500));
 		this.playBG(this.clip); // for soun
 
 	}
+	public Image getBackgroundImage(){
+		try{
+			return (Image)ImageIO.read(new URL("file:sprites/menus/backdrop.png"));//background image
+		}catch(Exception e){}
+		return null;
+	}
 
 	public void addPlant(Plant plant){
 		this.plantList.add(plant);
-		Thread threadTemp=new Thread(plant);
+		threadTemp=new Thread(plant);
 		this.add(plant);
 		threadTemp.start();
 		this.plantThreads.add(threadTemp);
@@ -69,7 +75,7 @@ public class Stage extends JPanel implements Runnable, Serializable{
 
 	public void addParticle(Particle particle){
 		this.particleList.add(particle);
-		Thread threadTemp=new Thread(particle);
+		threadTemp=new Thread(particle);
 		this.add(particle);
 		threadTemp.start();
 		this.particleThreads.add(threadTemp);
@@ -77,7 +83,7 @@ public class Stage extends JPanel implements Runnable, Serializable{
 
 	public void addZombie(Zombie zombie){
 		this.zombieList.add(zombie);
-		Thread threadTemp=new Thread(zombie);
+		threadTemp=new Thread(zombie);
 		this.add(zombie);
 		threadTemp.start();
 		this.zombieThreads.add(threadTemp);
@@ -101,12 +107,10 @@ public class Stage extends JPanel implements Runnable, Serializable{
 	public void clearDeadParticle(Particle particle){
 		this.remove(particle);
 		this.particleList.remove(particle);
-		
 	}
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
-		this.plantList.remove(plant);
-		
+		this.plantList.remove(plant);	
 	}
 		
 	public void pause(){
@@ -127,6 +131,7 @@ public class Stage extends JPanel implements Runnable, Serializable{
 			particleList.get(i).resume();
 		}for(int i=0;i<plantList.size();i+=1){
 			plantList.get(i).resume();
+
 		}this.clip.setMicrosecondPosition(this.clipTime);
 		this.clip.start();
 	}
@@ -144,7 +149,9 @@ public class Stage extends JPanel implements Runnable, Serializable{
 	public ArrayList<Zombie> getZombieList(){
 		return this.zombieList;
 	}
-	
+	public void setPlantList(ArrayList<Plant> plantList){
+		this.plantList=plantList;
+	}
 	public void playBG(Clip clip) {
 		try {
 			clip.open(this.ais); 
@@ -164,7 +171,7 @@ public class Stage extends JPanel implements Runnable, Serializable{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, null);//backgroundimage
+		g.drawImage(this.getBackgroundImage(), 0, 0, null);//backgroundimage
 		Graphics2D g2 = (Graphics2D) g;
 		//temporary
 		// g2.setPaint(Color.GRAY);
@@ -184,7 +191,6 @@ public class Stage extends JPanel implements Runnable, Serializable{
 	@Override
 	public void run(){
 		while(this.notDead&&this.notQuit){//change to no eat yet
-
 			if(!this.isPaused)
 				this.repaint();
 		}

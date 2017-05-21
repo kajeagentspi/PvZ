@@ -7,25 +7,39 @@ import java.io.Serializable;
 
 public class PeaShooter extends Plant implements Runnable, Serializable{
 	public PeaShooter(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,96,99,"sprites/plants/PeaShooter.gif",stage,TOUGHNESS_NORMAL);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
+		super(xPos,yPos,96,99,"sprites/plants/Peashooter_Idle.gif",stage,TOUGHNESS_NORMAL);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
 		this.actionSpd=1500;
-        // sound initialization
-        try {
-            this.url = new URL("file:audio/peashooterFiring.wav");
-            this.clip = AudioSystem.getClip();
-            this.ais = AudioSystem.getAudioInputStream(this.url);
-            this.clip.open(this.ais);
-        } catch (Exception e) {}
+		this.plantvar=new PlantVar(hp,actionSpd,isAlive,xPos,yPos,width,height,location,"PeaShooter");
+		// sound initialization
+		try {
+			this.url = new URL("file:audio/peashooterFiring.wav");
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);
+			this.clip.open(this.ais);
+		} catch (Exception e) {}
 	}
+	public PeaShooter(PlantVar plantvar,Stage stage){
+		super(plantvar,stage);
+		try {
+			this.url = new URL("file:audio/peashooterFiring.wav");
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);
+			this.clip.open(this.ais);
+
+		} catch (Exception e) {
+	}
+
 
 	public void shoot(){ //create peas until dead
 		if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag) {
-            stage.addParticle(new Pea(this.xPos,this.yPos+22,stage));
-            this.soundComponent(this.clip);
-        }  
+			this.soundComponent(this.clip);
+			this.changeIcon("sprites/plants/Peashooter_Fire.gif");
+			stage.addParticle(new Pea(this.xPos+25,this.yPos+12,stage));
+			
+		}  
 	}
-    
-    
+	
+	
 
 	@Override
 	public void run(){
@@ -41,7 +55,8 @@ public class PeaShooter extends Plant implements Runnable, Serializable{
 			try {
 				Thread.sleep(this.actionSpd);
 			}catch (Exception e){}
-		}
+			this.changeIcon("sprites/plants/Peashooter_Idle.gif");
+		}	
 		
 	}
 

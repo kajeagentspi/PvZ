@@ -9,25 +9,36 @@ public class SnowPea extends Plant implements Runnable, Serializable{
 	public SnowPea(int xPos, int yPos, Stage stage){
 		super(xPos,yPos,96,99,"sprites/plants/SnowPea.png",stage,TOUGHNESS_NORMAL);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
 		this.actionSpd=1500;
-        // sound initialization
-        try {
-            this.url = new URL("file:audio/peashooterFiring.wav");
-            this.clip = AudioSystem.getClip();
-            this.ais = AudioSystem.getAudioInputStream(this.url);
-            this.clip.open(this.ais);
+		this.plantvar=new PlantVar(hp,actionSpd,isAlive,xPos,yPos,width,height,location,"SnowPea");
 
-        } catch (Exception e) {}
-        
+		// sound initialization
+		try {
+			this.url = new URL("file:audio/peashooterFiring.wav");
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);
+			this.clip.open(this.ais);
+
+		} catch (Exception e) {}
+		
 	}
+	public SnowPea(PlantVar plantvar,Stage stage){
+		super(plantvar,stage);
+		try {
+			this.url = new URL("file:audio/peashooterFiring.wav");
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);
+			this.clip.open(this.ais);
 
+		} catch (Exception e) {}
+	}
 	public void shoot(){ //create peas until dead
 		if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag) {
-            stage.addParticle(new IcePea(this.xPos,this.yPos+22,stage));
-            this.soundComponent(this.clip);
-        }   
+			stage.addParticle(new IcePea(this.xPos,this.yPos+22,stage));
+			this.soundComponent(this.clip);
+		}   
 	}
-    
-    
+	
+	
 
 	@Override
 	public void run(){
