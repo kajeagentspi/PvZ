@@ -26,7 +26,7 @@ public class PeaShooter extends Plant implements Runnable, Serializable{
 			this.ais = AudioSystem.getAudioInputStream(this.url);
 			this.clip.open(this.ais);
 
-		} catch (Exception e) {
+		} catch (Exception e) {}
 	}
 
 
@@ -35,7 +35,6 @@ public class PeaShooter extends Plant implements Runnable, Serializable{
 			this.soundComponent(this.clip);
 			this.changeIcon("sprites/plants/Peashooter_Fire.gif");
 			stage.addParticle(new Pea(this.xPos+25,this.yPos+12,stage));
-			
 		}  
 	}
 	

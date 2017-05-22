@@ -22,6 +22,7 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 		this.stage=stage;
 		this.isSlowed=false;
 	}
+	//USE THIS FOR OTHER ZOMBIES
 	// public Zombie(int xPos,int yPos, int width,int height, String filename, int damage,int speed, int hp){
 	// 	super(xPos, yPos,width, height, filename);
 	// 	this.isAlive=true;
@@ -47,7 +48,7 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 	public void damaged(int damage){
 		this.hp-=damage;
 		System.out.println("Z HP: "+this.hp);
-		if(this.hp<=0){
+		if(this.hp<=0){	
 			this.setStatus();
 			System.out.println("Zombie dead");
 		}

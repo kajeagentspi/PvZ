@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class Sprite extends JPanel implements Serializable{
 	protected final static int DAMAGE_NORMAL=1;
 	protected final static int DAMAGE_HEAVY=90;
+	protected final static int DAMAGE_HIGH=90;
 	protected final static int TOUGHNESS_NORMAL=5;
 	protected final static int TOUGHNESS_HIGH=80;
 	protected final static int TOUGHNESS_INFINITE=255;
@@ -45,9 +46,7 @@ public class Sprite extends JPanel implements Serializable{
 	}
 	public void changeIcon(String location){
 		this.location=location;
-		try{
-			this.image=Toolkit.getDefaultToolkit().getImage(new URL("file:"+location));
-		}catch(Exception e){}
+		this.loadImage(this.location);
 	}
 	public Image getImage(){
 		return this.image;
