@@ -21,7 +21,7 @@ public class PeaShooter extends Plant implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==this.timer){
-			if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag) {
+			if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag&&this.isAlive) {
 				this.soundComponent(this.clip);
 				this.changeIcon("sprites/plants/Peashooter_Fire.gif");
 				this.stage.addParticle(new Pea(this.xPos+25,this.yPos+12,stage));

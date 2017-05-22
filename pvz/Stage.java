@@ -96,7 +96,9 @@ public class Stage extends JPanel implements ActionListener{
 	//adds particles
 	public void addParticle(Particle particle){
 		this.particleList.add(particle);
+		// Thread threadTemp=new Thread(particle);
 		this.add(particle);
+		// threadTemp.start();
 	}
 	//adds zombies
 	public void addZombie(Zombie zombie){

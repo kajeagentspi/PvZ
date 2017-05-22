@@ -61,7 +61,7 @@ public class Particle extends Sprite implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==this.timer){
-			if(this.isActive){
+			if(this.isActive&&!this.suspendFlag){
 				this.xPos+=1;
 				this.particlevar.setXPos(this.xPos);
 				this.updateRectangle();
