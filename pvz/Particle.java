@@ -1,23 +1,28 @@
 package pvz;
 import java.util.ArrayList;
-import java.net.URL;
-import java.io.Serializable;
 
-public class Particle extends Sprite implements Runnable, Serializable{
+public class Particle extends Sprite implements Runnable{
 	protected int damage;
 	protected boolean isActive;
 	protected int speed;
 	protected Stage stage;
-	public Particle(int xPos,int yPos, int width,int height, String location,int damage,int speed,Stage stage){
-		super(xPos,yPos,width,height,location);
-		this.isActive=true;
+	public Particle(int xPos, int yPos, int width, int height, int damage, int speed, String imageLocation, String audiolocation, Stage stage){
+		super(xPos, yPos, width, height, imageLocation, audiolocation);
 		this.damage=damage;
 		this.speed=speed;
+		this.isActive=true;
 		this.stage=stage;
 	}
 	
 	public int getDamage(){//return damge of particle
 		return this.damage;
+	}
+	public synchronized boolean getStatus(){//para malaman kung buburahin na
+		return this.isActive;
+	}
+	protected void setStatus(){//change the status of particle to be deleted
+		this.isActive=false;
+		stage.clearDeadParticle(this);
 	}
 
 	protected void move(){//move pea's xpos by 1
@@ -25,19 +30,11 @@ public class Particle extends Sprite implements Runnable, Serializable{
 			this.xPos+=1;
 		}	
 	}
-
-	public void setStatus(){//change the status of particle to be deleted
-		this.isActive=false;
-		stage.clearDeadParticle(this);
-	}
-
-	public synchronized boolean getStatus(){//para malaman kung buburahin na
-		return this.isActive;
-	}
-	public synchronized void colissionCheck(ArrayList<Zombie> zombieList){//check if zombie is hit
+	protected synchronized void colissionCheck(ArrayList<Zombie> zombieList){//check if zombie is hit
 		if(zombieList.size()!=0){
 			for(int i=0;i<zombieList.size();i+=1){
 				if(this.getRectangle().intersects(zombieList.get(i).getRectangle())){
+					this.soundComponent(this.clip);
 					zombieList.get(i).damaged(this.getDamage());
 					this.setStatus();
 					break;

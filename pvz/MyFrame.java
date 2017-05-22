@@ -6,11 +6,11 @@ import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
 
-public class MyFrame extends JFrame {
-	private Menu menu;
-	private Container container;
+public class MyFrame extends JFrame{
 	public int mxPos;
 	public int myPos;
+	private Menu menu;
+	private Container container;
 	public MyFrame (){
 		this.setPreferredSize(new Dimension(1005,630));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,20 +21,9 @@ public class MyFrame extends JFrame {
 		container.add(menu,"first");
 		this.pack();
 		this.setVisible(true);
-		
-
-	
-	//temp code
-
-	//FIX DOUBLE PLANTS
-	
-	//temp code end
-	}	
+	}
+	//returns container
 	public Container getContainer(){
 		return this.container;
 	}
-	
-
-
-	
 }

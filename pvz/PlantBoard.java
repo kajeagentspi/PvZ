@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 
 //BETA
-public class PlantBoard extends JPanel implements Serializable{
+public class PlantBoard extends JPanel{
 	JLabel xPos=new JLabel("x: ");
 	JLabel yPos=new JLabel("y: ");
 	GamePanel game;

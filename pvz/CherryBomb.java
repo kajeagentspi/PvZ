@@ -1,14 +1,12 @@
 package pvz;
 import java.awt.Rectangle;
 import java.net.*;
-import java.io.Serializable;
 
-public class CherryBomb extends Plant implements Runnable, Serializable{
+public class CherryBomb extends Plant implements Runnable{
 	public CherryBomb(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,96,99,"sprites/plants/CherryBomb.png",stage,TOUGHNESS_INFINITE);//int xPos, int yPos,int width,int height, String filename,Stage stage,int hp
-		this.actionSpd=1500;
-		this.plantvar=new PlantVar(hp,actionSpd,isAlive,xPos,yPos,width,height,location,"CherryBomb");
-
+		super(xPos,yPos,100,100,TOUGHNESS_INFINITE,"sprites/plants/CherryBomb_Idle.gif","audio/CherryBomb.wav",stage);
+		this.actionSpd=2000;
+		this.plantvar=new PlantVar(hp, actionSpd, xPos, yPos, width, height, isAlive, cliptime, "CherryBomb", imageLocation ,audioLocation);
 	}
 
 	public CherryBomb(PlantVar plantvar,Stage stage){
@@ -19,7 +17,7 @@ public class CherryBomb extends Plant implements Runnable, Serializable{
 		for(int i=stage.getZombieList().size()-1; i>=0;i-=1){
 			if(explosion.intersects(stage.getZombieList().get(i).getRectangle()))
 				stage.getZombieList().get(i).damaged(DAMAGE_HEAVY);
-			//if zombie hp <=-20 burn
+			this.soundComponent(this.clip);
 		}this.setHP(TOUGHNESS_INFINITE);
 	}
 

@@ -1,26 +1,24 @@
 package pvz;
-import java.util.ArrayList;
+import java.util.*;
 import java.net.*;
-import java.io.Serializable;
 
-
-public class Zombie extends Sprite implements Runnable, Serializable{
+public class Zombie extends Sprite implements Runnable{
 	protected int hp;
 	protected int damage;
-	protected boolean isAlive;
 	protected int speed;
-	protected boolean isEating;
-	protected Stage stage;
 	protected int slowtime;
+	protected boolean isAlive;
+	protected boolean isEating;
 	protected boolean isSlowed;
+	protected Stage stage;
 	public Zombie(int xPos, int yPos,Stage stage){
-		super(xPos, yPos,100, 100, "sprites/zombies/Zombie.gif");
-		this.isAlive=true;
+		super(xPos, yPos,100, 100, "sprites/zombies/Zombie.gif","audio/zombie.wav");
 		this.hp=10;
 		this.damage=1;
 		this.speed=50;
-		this.stage=stage;
+		this.isAlive=true;
 		this.isSlowed=false;
+		this.stage=stage;
 	}
 	//USE THIS FOR OTHER ZOMBIES
 	// public Zombie(int xPos,int yPos, int width,int height, String filename, int damage,int speed, int hp){
@@ -30,21 +28,18 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 	// 	this.damage=damage;
 	// 	this.speed=speed;
 	// }
-	private void move(){
-		if(this.isAlive){
-			this.xPos-=1;
-		}	
-	}
 	public int getDamage(){
 		return this.damage;
 	}
 	public boolean getStatus(){
 		return this.isAlive;
 	}
-	public void setStatus(){
-		this.isAlive=false;
-		this.stage.clearDeadZombie(this);
+	private void move(){
+		if(this.isAlive){
+			this.xPos-=1;
+		}
 	}
+	//applies the damage from the zombie
 	public void damaged(int damage){
 		this.hp-=damage;
 		System.out.println("Z HP: "+this.hp);
@@ -53,6 +48,21 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 			System.out.println("Zombie dead");
 		}
 	}
+	//sets the status to false then removes the zombie
+	public void setStatus(){
+		this.isAlive=false;
+		this.stage.clearDeadZombie(this);
+	}
+	//zombie eats the plant
+	protected void eat(Plant plant){
+		plant.setHP(this.damage);
+	}
+	//when zombie is hit by slow particle
+	protected void slowZombie(){
+		this.isSlowed=true;
+		System.out.println("Slowed");
+	}
+	//checks if zombie collide with a plant
 	protected Plant checkColission(ArrayList<Plant> plantList){
 		if(plantList.size()!=0){
 			for(int i=0;i<plantList.size();i+=1){
@@ -64,22 +74,13 @@ public class Zombie extends Sprite implements Runnable, Serializable{
 			}
 		}return null;
 	}
-
-	protected void eat(Plant plant){
-		plant.setHP(this.damage);
-	}
-	protected void slowZombie(){
-		this.isSlowed=true;
-		System.out.println("Slowed");
-	}
-	
 	@Override
 	public void run(){
 		while(this.isAlive){
 			this.updateRectangle();
 			if(this.xPos<0) 
 				this.setStatus();
-			if(this.isSlowed==true){
+			if(this.isSlowed){
 				if(this.checkColission(stage.getPlantList())!=null){
 					this.isEating=true;
 					this.eat(this.checkColission(stage.getPlantList()));

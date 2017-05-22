@@ -1,72 +1,85 @@
 package pvz;
 import java.net.*;
-import javax.swing.JPanel;
-import java.awt.Image;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.io.File;
-import javax.swing.ImageIcon;
 import javax.sound.sampled.*;
-import java.io.Serializable;
 
-
-
-public class Sprite extends JPanel implements Serializable{
+public class Sprite extends JPanel{
 	protected final static int DAMAGE_NORMAL=1;
 	protected final static int DAMAGE_HEAVY=90;
 	protected final static int DAMAGE_HIGH=90;
 	protected final static int TOUGHNESS_NORMAL=5;
 	protected final static int TOUGHNESS_HIGH=80;
 	protected final static int TOUGHNESS_INFINITE=255;
-	protected int xPos, yPos,height,width;
-	protected Rectangle rectangle;
+	protected int xPos;
+	protected int yPos;
+	protected int width;
+	protected int height;
 	protected boolean suspendFlag;
-	protected String location;
+	protected long cliptime;
+	protected AudioInputStream ais;
+	protected Clip clip;
 	protected Image image;
-	public Sprite(int xPos, int yPos, int width, int height, String location){
+	protected Rectangle rectangle;
+	protected String imageLocation;
+	protected String audioLocation;
+	protected URL url;
+
+	public Sprite(int xPos, int yPos, int width, int height, String imageLocation, String audioLocation){
 		this.setSize(1000,500);
 		this.xPos = xPos;
 		this.yPos = yPos;
-		this.height=height;
 		this.width=width;
-		this.location=location;
-		this.image=this.loadImage(location);
+		this.height=height;
+		this.loadSound(audioLocation);
+		this.image=this.loadImage(imageLocation);
 		this.rectangle=new Rectangle(xPos,yPos,width,height);
+		this.imageLocation=imageLocation;
+		this.audioLocation=audioLocation;
 		this.setOpaque(false);
 	}
-
-	private Image loadImage(String location){
-		try{
-			return Toolkit.getDefaultToolkit().getImage(new URL("file:"+location));
-		} catch(Exception e){}	
-		return null;
+	public int getXPos(){
+		return this.xPos;
 	}
-	public void changeIcon(String location){
-		this.location=location;
-		this.loadImage(this.location);
+	public int getYPos(){
+		return this.yPos;
+	}
+	public boolean getSuspendFlag(){
+		return this.suspendFlag;
 	}
 	public Image getImage(){
 		return this.image;
 	}
-
-	public int getXPos(){
-		return this.xPos;
-	}
-
-	public int getYPos(){
-		return this.yPos;
-	}
 	public Rectangle getRectangle(){
 		return this.rectangle;
 	}
+	//Loads the soundclip
+	private void loadSound(String audioLocation){
+		try {
+			this.url = new URL("file:"+audioLocation);
+			this.clip = AudioSystem.getClip();
+			this.ais = AudioSystem.getAudioInputStream(this.url);
+			this.clip.open(this.ais);
+		} catch (Exception e) {}
+	}
+	//loads the image from file
+	private Image loadImage(String imageLocation){
+		try{
+			return Toolkit.getDefaultToolkit().getImage(new URL("file:"+imageLocation));
+		} catch(Exception e){}	
+		return null;
+	}
+	//changes the image
+	public void changeIcon(String imageLocation){
+		this.imageLocation=imageLocation;
+		this.loadImage(this.imageLocation);
+	}
+	//updates the rectangle
 	protected void updateRectangle(){
 		this.rectangle=new Rectangle(this.xPos,this.yPos,width,height);
 	}
-
-	
+	//controls for pause/resume
 	public synchronized void pause(){
 		this.suspendFlag = true;
 	}
@@ -74,21 +87,18 @@ public class Sprite extends JPanel implements Serializable{
 		this.suspendFlag = false;
 		notify();
 	}
-	public boolean getSuspendFlag(){
-		return this.suspendFlag;
-	}
+	//plays the audioclip
 	public void soundComponent(Clip clip) {
-        try {
-            if(clip.isRunning()){
-            	clip.stop();
+		System.out.println("play");
+		try {
+			if(clip.isRunning()){
+				clip.stop();
+				this.cliptime=0;
 			}
-			clip.setFramePosition(0);
-        	clip.start();
-        }   catch(Exception e) {
-        	System.out.println(e);
-        }
-
-    }
+			this.clip.setMicrosecondPosition(this.cliptime);
+			this.clip.start();
+		}catch(Exception e) {}
+	}
 
 	@Override
 	public void paintComponent(Graphics g){

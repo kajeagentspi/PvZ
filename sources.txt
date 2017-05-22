@@ -1,7 +1,7 @@
 C:\Users\Jake\Documents\PvZ\Main.java
 C:\Users\Jake\Documents\PvZ\pvz\CherryBomb.java
+C:\Users\Jake\Documents\PvZ\pvz\FrozenPea.java
 C:\Users\Jake\Documents\PvZ\pvz\GamePanel.java
-C:\Users\Jake\Documents\PvZ\pvz\IcePea.java
 C:\Users\Jake\Documents\PvZ\pvz\Menu.java
 C:\Users\Jake\Documents\PvZ\pvz\MyFrame.java
 C:\Users\Jake\Documents\PvZ\pvz\Particle.java

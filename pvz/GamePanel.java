@@ -1,14 +1,13 @@
 package pvz;
 import java.awt.*;
 import javax.swing.*;
-import java.io.Serializable;
 import java.awt.event.*;
 
 public class GamePanel extends JPanel{
-	private Stage stage;
-	private PlantBoard pboard;
 	private int mxPos;
 	private int myPos;
+	private Stage stage;
+	private PlantBoard pboard;
 	private Menu menu;
 	public GamePanel(Menu menu){
 		this.menu=menu;
@@ -38,7 +37,7 @@ public class GamePanel extends JPanel{
 				int col=mxPos/100;
 				row-=1;
 				if(row>=0){
-					Plant plant=new PeaShooter(col*100,row*100,stage);
+					Plant plant=new CherryBomb(col*100,row*100,stage);
 					if(stage.checkSpace(plant)&&!stage.getStatus()){
 						System.out.println("Plant added");
 						stage.addPlant(plant);
@@ -50,13 +49,14 @@ public class GamePanel extends JPanel{
 			}	
 		});
 	}
-	public Stage getStage(){//returns stage
-		return this.stage;
+	//getters
+	public Menu getMenu(){
+		return this.menu;
 	}
 	public PlantBoard getPboard(){
 		return this.pboard;
 	}
-	public Menu getMenu(){
-		return this.menu;
+	public Stage getStage(){//returns stage
+		return this.stage;
 	}
 }

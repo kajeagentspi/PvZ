@@ -5,90 +5,59 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.io.Serializable;
 
  // for sounds
 import java.net.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
+
 public class Stage extends JPanel implements Runnable{
+	private int timer;
+	private boolean isPaused;
+	private boolean notDead;
+	private boolean notQuit;
+	private long clipTime;
+	private AudioInputStream ais;
+	private Clip clip;
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
-	private ArrayList<Thread> particleThreads;
-	private ArrayList<Thread> zombieThreads;
-	private ArrayList<Thread> plantThreads;
-	private boolean isPaused;
-	private int timer;
-	
-	private transient URL url;
-	private transient Clip clip;
-	private transient AudioInputStream ais;
-	private transient Thread threadTemp;
 	private Image background;
-	private long clipTime;
-	private boolean notDead;
-	private boolean notQuit;
+	private URL url;
+	private Thread threadTemp;
 	public Stage(){
+		this.setLayout(null);
+		this.background=this.loadImage("sprites/menus/backdrop.png");
+		this.setPreferredSize(new Dimension(1000, 500));
 		this.notQuit=true;
 		this.notDead=true;
-		this.setLayout(null);
 		this.isPaused=false;
-		particleList=new ArrayList<Particle>();
-		zombieList=new ArrayList<Zombie>();
-		plantList=new ArrayList<Plant>();
-		particleThreads=new ArrayList<Thread>();
-		zombieThreads=new ArrayList<Thread>();
-		plantThreads=new ArrayList<Thread>();
-		this.addZombie(new Zombie(1000,100,this));
-		this.addZombie(new Zombie(1000,200,this));
-		this.addZombie(new Zombie(1000,400,this));
-
-
-		try{
-			// for sound
+		try{ // for sound
 			this.url = new URL("file:audio/pvzBG1.wav");
 			this.clip = AudioSystem.getClip();
 			this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
+		this.playBG(this.clip); // for sound
+		particleList=new ArrayList<Particle>();
+		zombieList=new ArrayList<Zombie>();
+		plantList=new ArrayList<Plant>();
+		this.addZombie(new Zombie(1000,100,this));
+		this.addZombie(new Zombie(1000,200,this));
+		this.addZombie(new Zombie(1000,400,this));
 		// Thread threadZCreator=new Thread(new ZombieCreator(this));
 		// threadZCreator.start();
-		this.setPreferredSize(new Dimension(1000, 500));
-		this.playBG(this.clip); // for soun
-
 	}
-	public Image getBackgroundImage(){
-		try{
-			return (Image)ImageIO.read(new URL("file:sprites/menus/backdrop.png"));//background image
-		}catch(Exception e){}
-		return null;
+	//getters/checkers
+	public boolean getStatus(){
+		return this.isPaused;
 	}
-
-	public void addPlant(Plant plant){
-		this.plantList.add(plant);
-		threadTemp=new Thread(plant);
-		this.add(plant);
-		threadTemp.start();
-		this.plantThreads.add(threadTemp);
+	public boolean checkSpace(Plant plant){
+		for (int i=0;i<this.plantList.size();i+=1){
+			if (plantList.get(i).getRectangle().intersects(plant.getRectangle()))
+				return false;
+		}return true;
 	}
-
-	public void addParticle(Particle particle){
-		this.particleList.add(particle);
-		threadTemp=new Thread(particle);
-		this.add(particle);
-		threadTemp.start();
-		this.particleThreads.add(threadTemp);
-	}
-
-	public void addZombie(Zombie zombie){
-		this.zombieList.add(zombie);
-		threadTemp=new Thread(zombie);
-		this.add(zombie);
-		threadTemp.start();
-		this.zombieThreads.add(threadTemp);
-	}
-
 	public boolean zombieCheck(int xPos,int yPos){
 		if(zombieList.size()!=0){
 			for(int i=0;i<zombieList.size();i+=1){
@@ -97,22 +66,59 @@ public class Stage extends JPanel implements Runnable{
 			}
 		}return false;
 	}
-
-
+	public ArrayList<Plant> getPlantList(){
+		return this.plantList;
+	}
+	public ArrayList<Zombie> getZombieList(){
+		return this.zombieList;
+	}
+	public void setPlantList(ArrayList<Plant> plantList){
+		this.plantList=plantList;
+	}
+	private Image loadImage(String imageLocation){
+		try{
+			return Toolkit.getDefaultToolkit().getImage(new URL("file:"+imageLocation));
+		} catch(Exception e){}	
+		return null;
+	}
+	//adds plant
+	public void addPlant(Plant plant){
+		this.plantList.add(plant);
+		Thread threadTemp=new Thread(plant);
+		this.add(plant);
+		threadTemp.start();
+	}
+	//adds particles
+	public void addParticle(Particle particle){
+		this.particleList.add(particle);
+		Thread threadTemp=new Thread(particle);
+		this.add(particle);
+		threadTemp.start();
+	}
+	//adds zombies
+	public void addZombie(Zombie zombie){
+		this.zombieList.add(zombie);
+		Thread threadTemp=new Thread(zombie);
+		this.add(zombie);
+		threadTemp.start();
+	}
+	//removes dead zombie
 	public void clearDeadZombie(Zombie zombie){
 		this.remove(zombie);
 		this.zombieList.remove(zombie);
-		
 	}
+	//removes particles that hit
 	public void clearDeadParticle(Particle particle){
 		this.remove(particle);
 		this.particleList.remove(particle);
 	}
+	//removes dead plants
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
 		this.plantList.remove(plant);	
 	}
-		
+	//pauses the game
+	//sets the suspenFlag of all elements to true
 	public void pause(){
 		for(int i=0;i<zombieList.size();i+=1){
 			zombieList.get(i).pause();
@@ -123,7 +129,8 @@ public class Stage extends JPanel implements Runnable{
 		}this.clipTime= this.clip.getMicrosecondPosition();
 		this.clip.stop();
 	}
-
+	//resumes the game
+	//sets the suspenFlag of all elements to false
 	public void resume(){
 		for(int i=0;i<zombieList.size();i+=1){
 			zombieList.get(i).resume();
@@ -131,50 +138,31 @@ public class Stage extends JPanel implements Runnable{
 			particleList.get(i).resume();
 		}for(int i=0;i<plantList.size();i+=1){
 			plantList.get(i).resume();
-
 		}this.clip.setMicrosecondPosition(this.clipTime);
 		this.clip.start();
 	}
-
-	public boolean getStatus(){
-		return this.isPaused;
-	}
+	//toggle for status
 	public void setStatus(){
 		this.isPaused=!this.isPaused;
 	}
-
-	public ArrayList<Plant> getPlantList(){
-		return this.plantList;
-	}
-	public ArrayList<Zombie> getZombieList(){
-		return this.zombieList;
-	}
-	public void setPlantList(ArrayList<Plant> plantList){
-		this.plantList=plantList;
-	}
+	//plays the background music
 	public void playBG(Clip clip) {
 		try {
 			clip.open(this.ais); 
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
-		} catch(Exception e) {}
-		 
+		} catch(Exception e) {}	 
 	}
+	//after loading the game revert the notQuit status to true
 	public void resetnotQuit(){
 		this.notQuit=true;
 	}
-	public boolean checkSpace(Plant plant){
-		for (int i=0;i<this.plantList.size();i+=1){
-			if (plantList.get(i).getRectangle().intersects(plant.getRectangle()))
-				return false;
-		}return true;
-	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(this.getBackgroundImage(), 0, 0, null);//backgroundimage
+		g.drawImage(this.background, 0, 0, null);//backgroundimage
 		Graphics2D g2 = (Graphics2D) g;
-		//temporary
-		// g2.setPaint(Color.GRAY);
+		//draws the bars
 		for (int i = 1; i < 10; i++) {
 			if(true){
 				int x = i * 100;
@@ -192,7 +180,7 @@ public class Stage extends JPanel implements Runnable{
 	public void run(){
 		while(this.notDead&&this.notQuit){//change to no eat yet
 			if(!this.isPaused)
-				this.repaint();
+				this.repaint();//prevent gif lag
 		}
 	}
 }

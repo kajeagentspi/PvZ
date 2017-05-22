@@ -10,9 +10,9 @@ class Menu extends JPanel{
 	private JButton newgame;
 	private JButton loadgame;
 	private JButton quit;
-	private MyFrame frame;
-	private GamePanel game;
 	private JPanel menu;
+	private GamePanel game;
+	private MyFrame frame;
 	public Menu(MyFrame frame){
 		this.frame=frame;
 
@@ -23,6 +23,7 @@ class Menu extends JPanel{
 		this.menu.add(this.newgame);
 		this.menu.add(this.loadgame);
 		this.menu.add(this.quit);
+
 		frame.getContainer().add(this.menu,"menu");
 		CardLayout c = (CardLayout) frame.getContainer().getLayout();
 		c.show(frame.getContainer(),"menu"); 
@@ -79,26 +80,23 @@ class Menu extends JPanel{
 			for(int i=0;i<plantvarList.size();i+=1){
 				if(plantvarList.get(i).getType().equals("PeaShooter")){
 					game.getStage().addPlant(new PeaShooter(plantvarList.get(i),game.getStage()));
-				}else if(plantvarList.get(i).getType().equals("CherryBomb")){
-					game.getStage().addPlant(new CherryBomb(plantvarList.get(i),game.getStage()));
-				}else if(plantvarList.get(i).getType().equals("WallNut")){
-					game.getStage().addPlant(new WallNut(plantvarList.get(i),game.getStage()));
+				// }else if(plantvarList.get(i).getType().equals("CherryBomb")){
+				// 	game.getStage().addPlant(new CherryBomb(plantvarList.get(i),game.getStage()));
+				// }else if(plantvarList.get(i).getType().equals("WallNut")){
+				// 	game.getStage().addPlant(new WallNut(plantvarList.get(i),game.getStage()));
 				}else if(plantvarList.get(i).getType().equals("SnowPea")){
 					game.getStage().addPlant(new SnowPea(plantvarList.get(i),game.getStage()));
 				}
-				game.getStage().resume();
 
 			}
 			ois.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		game.getStage().resume();
 		Thread thread=new Thread(this.game.getStage());
 		thread.start();
 
-	}
-	public void quitGame(){
-		System.exit(0);
 	}
 	public void saveGame(){
 		ArrayList<PlantVar> plantvarList=new ArrayList<PlantVar>();
@@ -114,4 +112,8 @@ class Menu extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	public void quitGame(){
+		System.exit(0);
+	}
+	
 }

@@ -3,7 +3,7 @@ import java.awt.event.*;
 import java.io.Serializable;
 
 
-public class PauseListener implements KeyListener, Serializable{
+public class PauseListener implements KeyListener{
 	private Stage stage;
 	public PauseListener(Stage stage){
 		this.stage=stage;
