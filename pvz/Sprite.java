@@ -8,7 +8,6 @@ import javax.sound.sampled.*;
 public class Sprite extends JPanel{
 	protected final static int DAMAGE_NORMAL=1;
 	protected final static int DAMAGE_HEAVY=90;
-	protected final static int DAMAGE_HIGH=90;
 	protected final static int TOUGHNESS_NORMAL=5;
 	protected final static int TOUGHNESS_HIGH=80;
 	protected final static int TOUGHNESS_INFINITE=255;
