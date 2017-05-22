@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.net.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
+import javax.swing.Timer;
+import java.awt.event.*;
 
-
-public class Stage extends JPanel implements Runnable{
-	private int timer;
+public class Stage extends JPanel implements ActionListener{
 	private boolean isPaused;
 	private boolean notDead;
 	private boolean notQuit;
@@ -25,7 +25,7 @@ public class Stage extends JPanel implements Runnable{
 	private ArrayList<Plant> plantList;
 	private Image background;
 	private URL url;
-	private Thread threadTemp;
+	private Timer timer;
 	public Stage(){
 		this.setLayout(null);
 		this.background=this.loadImage("sprites/menus/backdrop.png");
@@ -42,11 +42,13 @@ public class Stage extends JPanel implements Runnable{
 		particleList=new ArrayList<Particle>();
 		zombieList=new ArrayList<Zombie>();
 		plantList=new ArrayList<Plant>();
+		this.timer=new Timer(4,this);
 		this.addZombie(new Zombie(1000,100,this));
 		this.addZombie(new Zombie(1000,200,this));
 		this.addZombie(new Zombie(1000,400,this));
 		// Thread threadZCreator=new Thread(new ZombieCreator(this));
 		// threadZCreator.start();
+		timer.start();
 	}
 	//getters/checkers
 	public boolean getStatus(){
@@ -72,6 +74,9 @@ public class Stage extends JPanel implements Runnable{
 	public ArrayList<Zombie> getZombieList(){
 		return this.zombieList;
 	}
+	public ArrayList<Particle> getParticleList(){
+		return this.particleList;
+	}
 	public void setPlantList(ArrayList<Plant> plantList){
 		this.plantList=plantList;
 	}
@@ -84,16 +89,14 @@ public class Stage extends JPanel implements Runnable{
 	//adds plant
 	public void addPlant(Plant plant){
 		this.plantList.add(plant);
-		Thread threadTemp=new Thread(plant);
+		// Thread threadTemp=new Thread(plant);
 		this.add(plant);
-		threadTemp.start();
+		// threadTemp.start();
 	}
 	//adds particles
 	public void addParticle(Particle particle){
 		this.particleList.add(particle);
-		Thread threadTemp=new Thread(particle);
 		this.add(particle);
-		threadTemp.start();
 	}
 	//adds zombies
 	public void addZombie(Zombie zombie){
@@ -106,16 +109,19 @@ public class Stage extends JPanel implements Runnable{
 	public void clearDeadZombie(Zombie zombie){
 		this.remove(zombie);
 		this.zombieList.remove(zombie);
+
 	}
 	//removes particles that hit
 	public void clearDeadParticle(Particle particle){
 		this.remove(particle);
 		this.particleList.remove(particle);
+
 	}
 	//removes dead plants
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
-		this.plantList.remove(plant);	
+		this.plantList.remove(plant);
+
 	}
 	//pauses the game
 	//sets the suspenFlag of all elements to true
@@ -176,11 +182,27 @@ public class Stage extends JPanel implements Runnable{
 			}
 		}
 	}
+	// public void moveZombies(){
+	// 	for(int i=0;i<zombieList.size();i+=1){
+	// 		zombieList.get(i).move();
+	// 	}
+	// }
+	public void moveParticles(){
+		for(int i=0;i<this.particleList.size();i+=1){
+			this.particleList.get(i).move();
+		}
+	}
+	public void shootPlants(){
+		for(int i=0;i<this.plantList.size();i+=1){
+			this.plantList.get(i).shoot();
+		}
+	}
 	@Override
-	public void run(){
-		while(this.notDead&&this.notQuit){//change to no eat yet
-			if(!this.isPaused)
-				this.repaint();//prevent gif lag
+	public void actionPerformed(ActionEvent e){
+		if(e.getSource()==this.timer&&this.notQuit&&!this.isPaused){
+			this.shootPlants();
+			this.moveParticles();
+			this.repaint();// this will call at every 1 second
 		}
 	}
 }

@@ -3,12 +3,13 @@ import java.net.URL;
 import javax.swing.*;
 import javax.sound.sampled.*;
 
-public abstract class Plant extends Sprite implements Runnable{
+public abstract class Plant extends Sprite{
 	protected int hp;
 	protected int actionSpd;
 	protected boolean isAlive;
 	protected PlantVar plantvar;
 	protected Stage stage;
+	protected Timer timer;
 	//normal plant constructor
 	public Plant(int xPos, int yPos,int width,int height, int hp,String imageLocation,String audioLocation,Stage stage){
 		super(xPos,yPos,width,height,imageLocation,audioLocation);
@@ -55,5 +56,6 @@ public abstract class Plant extends Sprite implements Runnable{
 		plantvar.setisAlive(this.isAlive);
 		this.stage.clearDeadPlants(this);
 	}
+	public abstract void shoot();
 	
 }

@@ -11,6 +11,7 @@ public class Zombie extends Sprite implements Runnable{
 	protected boolean isEating;
 	protected boolean isSlowed;
 	protected Stage stage;
+	protected ZombieVar zombievar;
 	public Zombie(int xPos, int yPos,Stage stage){
 		super(xPos, yPos,100, 100, "sprites/zombies/Zombie.gif","audio/zombie.wav");
 		this.hp=10;
@@ -18,6 +19,18 @@ public class Zombie extends Sprite implements Runnable{
 		this.speed=50;
 		this.isAlive=true;
 		this.isSlowed=false;
+		this.stage=stage;
+		this.zombievar =new ZombieVar(damage, speed, hp, xPos, yPos, width, height, isAlive, isEating, isSlowed, imageLocation, audioLocation,"Zombie");
+	}
+	public Zombie(ZombieVar zombievar,Stage stage){
+		super(zombievar.getXPos(),zombievar.getYPos(),zombievar.getWidth(),zombievar.getHeight(),zombievar.getImageLocation(),zombievar.getAudioLocation());
+		this.hp=zombievar.getHP();
+		this.damage=zombievar.getDamage();
+		this.speed=zombievar.getSpeed();
+		this.isAlive=zombievar.getIsAlive();
+		this.isEating=zombievar.getIsEating();
+		this.isSlowed=zombievar.getIsSlowed();
+		this.zombievar=zombievar;
 		this.stage=stage;
 	}
 	//USE THIS FOR OTHER ZOMBIES
@@ -42,6 +55,7 @@ public class Zombie extends Sprite implements Runnable{
 	//applies the damage from the zombie
 	public void damaged(int damage){
 		this.hp-=damage;
+		this.zombievar.setXPos(this.xPos);
 		System.out.println("Z HP: "+this.hp);
 		if(this.hp<=0){	
 			this.setStatus();
@@ -51,6 +65,7 @@ public class Zombie extends Sprite implements Runnable{
 	//sets the status to false then removes the zombie
 	public void setStatus(){
 		this.isAlive=false;
+		this.zombievar.setIsAlive(this.isAlive);
 		this.stage.clearDeadZombie(this);
 	}
 	//zombie eats the plant
@@ -60,6 +75,7 @@ public class Zombie extends Sprite implements Runnable{
 	//when zombie is hit by slow particle
 	protected void slowZombie(){
 		this.isSlowed=true;
+		this.zombievar.setIsSlowed(this.isSlowed);
 		System.out.println("Slowed");
 	}
 	//checks if zombie collide with a plant
@@ -74,6 +90,9 @@ public class Zombie extends Sprite implements Runnable{
 			}
 		}return null;
 	}
+	public ZombieVar getZombieVar(){
+		return this.zombievar;
+	}
 	@Override
 	public void run(){
 		while(this.isAlive){
@@ -83,12 +102,14 @@ public class Zombie extends Sprite implements Runnable{
 			if(this.isSlowed){
 				if(this.checkColission(stage.getPlantList())!=null){
 					this.isEating=true;
+					this.zombievar.setIsEating(this.isEating);
 					this.eat(this.checkColission(stage.getPlantList()));
 					try{
 						Thread.sleep(1000*2); 
 					}catch(Exception e){}
 				}else{
 					this.isEating=false;
+					this.zombievar.setIsEating(this.isEating);
 					for(int i=0;i<3;i++){
 						if(!this.isEating) 
 							this.move();
@@ -107,11 +128,15 @@ public class Zombie extends Sprite implements Runnable{
 			}else{
 				if(this.checkColission(stage.getPlantList())!=null){
 					this.isEating=true;
+					this.zombievar.setIsEating(this.isEating);
 					this.eat(this.checkColission(stage.getPlantList()));
 					try{
 						Thread.sleep(1000);
 					}catch(Exception e){}
-				}else this.isEating=false;
+				}else {
+					this.isEating=false;
+					this.zombievar.setIsEating(this.isEating);
+				}
 				if(!this.isEating) 
 					this.move();
 				this.repaint();

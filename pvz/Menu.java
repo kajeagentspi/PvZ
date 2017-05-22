@@ -5,7 +5,6 @@ import java.io.*;
 import java.awt.event.*;
 import java.util.List;
 import java.util.ArrayList;
-
 class Menu extends JPanel{
 	private JButton newgame;
 	private JButton loadgame;
@@ -15,7 +14,6 @@ class Menu extends JPanel{
 	private MyFrame frame;
 	public Menu(MyFrame frame){
 		this.frame=frame;
-
 		this.newgame=new JButton("New Game");
 		this.loadgame=new JButton("Load Game");
 		this.quit=new JButton("Quit");
@@ -57,8 +55,8 @@ class Menu extends JPanel{
 		this.game=new GamePanel(this);
 		this.game.requestFocus();
 		frame.getContainer().add(this.game,"second");
-		Thread thread=new Thread(this.game.getStage());
-		thread.start();
+		// Thread thread=new Thread(this.game.getStage());
+		// thread.start();
 	}
 	public void loadGame(){
 		this.game=new GamePanel(this);
@@ -80,23 +78,67 @@ class Menu extends JPanel{
 			for(int i=0;i<plantvarList.size();i+=1){
 				if(plantvarList.get(i).getType().equals("PeaShooter")){
 					game.getStage().addPlant(new PeaShooter(plantvarList.get(i),game.getStage()));
-				// }else if(plantvarList.get(i).getType().equals("CherryBomb")){
-				// 	game.getStage().addPlant(new CherryBomb(plantvarList.get(i),game.getStage()));
-				// }else if(plantvarList.get(i).getType().equals("WallNut")){
-				// 	game.getStage().addPlant(new WallNut(plantvarList.get(i),game.getStage()));
+				}else if(plantvarList.get(i).getType().equals("CherryBomb")){
+					game.getStage().addPlant(new CherryBomb(plantvarList.get(i),game.getStage()));
+				}else if(plantvarList.get(i).getType().equals("WallNut")){
+					game.getStage().addPlant(new WallNut(plantvarList.get(i),game.getStage()));
 				}else if(plantvarList.get(i).getType().equals("SnowPea")){
 					game.getStage().addPlant(new SnowPea(plantvarList.get(i),game.getStage()));
 				}
+			}
+			ois.close();
+		}catch(Exception e){}
 
+		try{
+			FileInputStream fis = new FileInputStream("particle.sav");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			ArrayList<ParticleVar> particlevarlist=new ArrayList<ParticleVar>();
+			ArrayList<?> objectList = (ArrayList<?>) ois.readObject();
+			if (objectList.size()>0){
+				for(int i=0;i<objectList.size();i+=1){
+					Object o=objectList.get(i);
+					if(o instanceof ParticleVar){
+						particlevarlist.add((ParticleVar)o);
+					}
+				}
+			}
+			for(int i=0;i<particlevarlist.size();i+=1){
+				if(particlevarlist.get(i).getType().equals("Pea")){
+					System.out.println("lol");
+					game.getStage().addParticle(new Pea(particlevarlist.get(i),game.getStage()));
+				}else if(particlevarlist.get(i).getType().equals("FrozenPea")){
+					game.getStage().addParticle(new FrozenPea(particlevarlist.get(i),game.getStage()));
+				}
 			}
 			ois.close();
 		}catch(Exception e){
-			e.printStackTrace();
+			System.out.println(e);
 		}
-		game.getStage().resume();
-		Thread thread=new Thread(this.game.getStage());
-		thread.start();
 
+		try{
+			FileInputStream fis = new FileInputStream("zombie.sav");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			ArrayList<ZombieVar> zombievarlist=new ArrayList<ZombieVar>();
+			ArrayList<?> objectList = (ArrayList<?>) ois.readObject();
+			if (objectList.size()>0){
+				for(int i=0;i<objectList.size();i+=1){
+					Object o=objectList.get(i);
+					if(o instanceof ZombieVar){
+						zombievarlist.add((ZombieVar)o);
+					}
+				}
+			}
+			for(int i=0;i<zombievarlist.size();i+=1){
+				if(zombievarlist.get(i).getType().equals("Zombie")){
+					game.getStage().addZombie(new Zombie(zombievarlist.get(i),game.getStage()));
+				}
+			}
+			ois.close();
+		}catch(Exception e){}
+
+		game.getStage().resume();
+		// Thread thread=new Thread(this.game.getStage());
+		// thread.start();
 	}
 	public void saveGame(){
 		ArrayList<PlantVar> plantvarList=new ArrayList<PlantVar>();
@@ -107,6 +149,32 @@ class Menu extends JPanel{
 			FileOutputStream fos = new FileOutputStream("plant.sav");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(plantvarList);
+			oos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		ArrayList<ParticleVar> particlevarlist=new ArrayList<ParticleVar>();
+		for(int i=0;i<this.game.getStage().getParticleList().size();i+=1){
+			particlevarlist.add(this.game.getStage().getParticleList().get(i).getParticleVar());
+		}
+		try{
+			FileOutputStream fos = new FileOutputStream("particle.sav");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(particlevarlist);
+			oos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		ArrayList<ZombieVar> zombievarlist=new ArrayList<ZombieVar>();
+		for(int i=0;i<this.game.getStage().getZombieList().size();i+=1){
+			zombievarlist.add(this.game.getStage().getZombieList().get(i).getZombieVar());
+		}
+		try{
+			FileOutputStream fos = new FileOutputStream("zombie.sav");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(zombievarlist);
 			oos.close();
 		}catch(Exception e){
 			e.printStackTrace();

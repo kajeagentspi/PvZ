@@ -37,7 +37,7 @@ public class GamePanel extends JPanel{
 				int col=mxPos/100;
 				row-=1;
 				if(row>=0){
-					Plant plant=new CherryBomb(col*100,row*100,stage);
+					Plant plant=new PeaShooter(col*100,row*100,stage);
 					if(stage.checkSpace(plant)&&!stage.getStatus()){
 						System.out.println("Plant added");
 						stage.addPlant(plant);

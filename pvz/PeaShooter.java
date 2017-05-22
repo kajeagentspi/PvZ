@@ -2,42 +2,31 @@ package pvz;
 import java.net.URL;
 import javax.swing.*;
 import javax.sound.sampled.*;
+import java.awt.event.*;
 
-public class PeaShooter extends Plant implements Runnable{
+public class PeaShooter extends Plant implements ActionListener{
 	public PeaShooter(int xPos, int yPos, Stage stage){
 		super(xPos,yPos,100,100,TOUGHNESS_NORMAL,"sprites/plants/Peashooter_Idle.gif","audio/peaShooter.wav",stage);
 		this.actionSpd=1500;
+		this.timer=new Timer(this.actionSpd,this);
 		this.plantvar=new PlantVar(hp, actionSpd, xPos, yPos, width, height, isAlive, cliptime, "PeaShooter",imageLocation ,audioLocation);
 	}
 	public PeaShooter(PlantVar plantvar,Stage stage){
 		super(plantvar,stage);
+		this.timer=new Timer(this.actionSpd,this);
 	}
 
 	public void shoot(){ //create peas until dead
-		if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag) {
-			this.soundComponent(this.clip);
-			this.changeIcon("sprites/plants/Peashooter_Fire.gif");
-			stage.addParticle(new Pea(this.xPos+25,this.yPos+12,stage));
-		}  
+		this.timer.start();
 	}
-
-	@Override
-	public void run(){
-		while(this.isAlive){
-			try{
-				synchronized(this){
-					while(this.suspendFlag){
-						wait();
-					}
-				}
-			}catch (InterruptedException e){}
-			this.shoot();
-			try {
-				Thread.sleep(this.actionSpd);
-			}catch (Exception e){}
-			this.changeIcon("sprites/plants/Peashooter_Idle.gif");
-		}	
-		
+	public void actionPerformed(ActionEvent e){
+		if(e.getSource()==this.timer){
+			if(stage.zombieCheck(this.xPos,this.yPos)&&!this.suspendFlag) {
+				this.soundComponent(this.clip);
+				this.changeIcon("sprites/plants/Peashooter_Fire.gif");
+				this.stage.addParticle(new Pea(this.xPos+25,this.yPos+12,stage));
+				this.changeIcon("sprites/plants/Peashooter_Idle.gif");
+			}
+    	}
 	}
-
 }
