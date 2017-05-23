@@ -51,7 +51,6 @@ public class Stage extends JPanel implements ActionListener{
 		this.addZombie(new Zombie(1000,200,this));
 		this.addZombie(new Zombie(1000,400,this));
 		this.addSun(new Sun(500,400,this));
-
 		this.timer.start();
 	}
 	//getters/checkers
@@ -80,6 +79,9 @@ public class Stage extends JPanel implements ActionListener{
 	}
 	public ArrayList<Particle> getParticleList(){
 		return this.particleList;
+	}
+	public ArrayList<Sun> getSunList(){
+		return this.sunList;
 	}
 	public void setPlantList(ArrayList<Plant> plantList){
 		this.plantList=plantList;
@@ -191,11 +193,7 @@ public class Stage extends JPanel implements ActionListener{
 			}
 		}
 	}
-	// public void moveZombies(){
-	// 	for(int i=0;i<zombieList.size();i+=1){
-	// 		zombieList.get(i).move();
-	// 	}
-	// }
+
 	public void moveParticles(){
 		for(int i=0;i<this.particleList.size();i+=1){
 			this.particleList.get(i).move();
@@ -206,10 +204,7 @@ public class Stage extends JPanel implements ActionListener{
 			this.plantList.get(i).shoot();
 		}
 	}
-	public void addSun(){
-		this.sun+=25;
-		System.out.println(this.sun);
-	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==this.timer&&this.notQuit&&!this.isPaused){

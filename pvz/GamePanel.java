@@ -24,11 +24,11 @@ public class GamePanel extends JPanel{
 			public void mouseMoved(MouseEvent me){
 				mxPos= me.getX();
 				myPos= me.getY();
-
 				pboard.showCoords(mxPos,myPos);
 			}
 		});
 		this.addMouseListener(new PlanterListener(this));
+		this.addMouseListener(new SunListener(this));
 	}
 	//getters
 	public Menu getMenu(){

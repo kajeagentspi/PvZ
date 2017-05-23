@@ -6,6 +6,7 @@ public class GoToMenuListener implements ActionListener {
 		this.game=game;
 	}
 	public void actionPerformed(ActionEvent e){
+		game.getStage().pause();
 		game.getMenu().showMenu();
 	}
 }

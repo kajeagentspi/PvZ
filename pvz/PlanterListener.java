@@ -9,10 +9,8 @@ public class PlanterListener implements MouseListener{
 	public PlanterListener(GamePanel game){
 		this.game=game;
 		this.plantActive=game.getPboard().getPlantActive();
-
 		this.stage=game.getStage();
 	}
-
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
@@ -38,6 +36,9 @@ public class PlanterListener implements MouseListener{
 					break;
 				case "Repeater":
 					plant=new Repeater(col*100,row*100,this.stage);
+					break;
+				case "WallNut":
+					plant=new WallNut(col*100,row*100,this.stage);
 					break;
 			}
 			if(plant!=null){

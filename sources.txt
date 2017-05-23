@@ -17,6 +17,7 @@ C:\Users\Jake\Documents\PvZ\pvz\Repeater.java
 C:\Users\Jake\Documents\PvZ\pvz\Sprite.java
 C:\Users\Jake\Documents\PvZ\pvz\Stage.java
 C:\Users\Jake\Documents\PvZ\pvz\Sun.java
+C:\Users\Jake\Documents\PvZ\pvz\SunListener.java
 C:\Users\Jake\Documents\PvZ\pvz\WallNut.java
 C:\Users\Jake\Documents\PvZ\pvz\Zombie.java
 C:\Users\Jake\Documents\PvZ\pvz\ZombieCreator.java
