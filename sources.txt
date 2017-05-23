@@ -1,6 +1,9 @@
 C:\Users\Jake\Documents\PvZ\Main.java
 C:\Users\Jake\Documents\PvZ\pvz\CardButtonListener.java
 C:\Users\Jake\Documents\PvZ\pvz\CherryBomb.java
+C:\Users\Jake\Documents\PvZ\pvz\Chomper.java
+C:\Users\Jake\Documents\PvZ\pvz\ContinueToMenuListener.java
+C:\Users\Jake\Documents\PvZ\pvz\GameOver.java
 C:\Users\Jake\Documents\PvZ\pvz\GamePanel.java
 C:\Users\Jake\Documents\PvZ\pvz\GoToMenuListener.java
 C:\Users\Jake\Documents\PvZ\pvz\Menu.java
@@ -13,11 +16,12 @@ C:\Users\Jake\Documents\PvZ\pvz\Plant.java
 C:\Users\Jake\Documents\PvZ\pvz\PlantBoard.java
 C:\Users\Jake\Documents\PvZ\pvz\PlanterListener.java
 C:\Users\Jake\Documents\PvZ\pvz\PotatoMine.java
-C:\Users\Jake\Documents\PvZ\pvz\Repeater.java
 C:\Users\Jake\Documents\PvZ\pvz\Shovel.java
 C:\Users\Jake\Documents\PvZ\pvz\Sprite.java
 C:\Users\Jake\Documents\PvZ\pvz\Stage.java
 C:\Users\Jake\Documents\PvZ\pvz\Sun.java
+C:\Users\Jake\Documents\PvZ\pvz\SunCreator.java
+C:\Users\Jake\Documents\PvZ\pvz\SunFlower.java
 C:\Users\Jake\Documents\PvZ\pvz\SunListener.java
 C:\Users\Jake\Documents\PvZ\pvz\WallNut.java
 C:\Users\Jake\Documents\PvZ\pvz\Zombie.java

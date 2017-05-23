@@ -32,7 +32,7 @@ public  class ZombieCreator implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e){
-		if(e.getSource()==this.timer){
+		if(e.getSource()==this.timer&&this.stage.getIsAlive()){
 			if(this.level<=5||this.level>5)//1-5
 				this.chooseZombie(REGULAR_ZOMBIE);
 			if(this.level>5&&this.level<=10||this.level>10)//6-10

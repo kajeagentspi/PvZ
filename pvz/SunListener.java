@@ -25,7 +25,7 @@ public class SunListener implements MouseListener{
 		for(int i=0;i<sunList.size();i+=1){
 			Rectangle rect=new Rectangle(this.mxPos,this.myPos-100,1,1);
 			if(this.sunList.get(i).getRectangle().intersects(rect)&&!this.stage.getStatus()){
-				this.pboard.addSun(25);
+				this.game.addSun(25);
 				this.stage.clearDeadSuns(sunList.get(i));
 			}
 		}

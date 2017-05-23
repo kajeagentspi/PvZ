@@ -10,7 +10,7 @@ public class Zombie extends Sprite implements Runnable{
 	protected boolean isEating;
 	protected Stage stage;
 	public Zombie(int xPos, int yPos,Stage stage){
-		super(xPos, yPos,100, 100, "sprites/zombies/Zombie.gif","audio/zombie.wav");
+		super(xPos, yPos,100, 100, "sprites/zombies/Reg_Zombie.gif",null);
 		this.hp=10;
 		this.damage=1;
 		this.speed=50;
@@ -34,7 +34,7 @@ public class Zombie extends Sprite implements Runnable{
 	}
 	private void move(){
 		if(this.isAlive){
-			this.xPos-=1;
+			this.xPos-=50;
 		}
 	}
 	//applies the damage from the zombie
@@ -42,6 +42,7 @@ public class Zombie extends Sprite implements Runnable{
 		this.hp-=damage;
 		System.out.println("Z HP: "+this.hp);
 		if(this.hp<=0){	
+			this.stage.getGamePanel().setScore(1);
 			this.setStatus();
 			System.out.println("Zombie dead");
 		}
@@ -71,8 +72,12 @@ public class Zombie extends Sprite implements Runnable{
 	public void run(){
 		while(this.isAlive){
 			this.updateRectangle();
-			if(this.xPos<0) 
+			if(this.xPos<=0){
+				this.isAlive=false;
+				System.out.println("Game Over");
+				this.stage.terminate();
 				this.setStatus();
+			}
 			if(this.checkColission(stage.getPlantList())!=null){
 				this.isEating=true;
 				this.eat(this.checkColission(stage.getPlantList()));

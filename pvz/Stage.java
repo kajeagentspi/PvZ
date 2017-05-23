@@ -15,7 +15,7 @@ import java.awt.event.*;
 public class Stage extends JPanel implements ActionListener{
 	private int sun;
 	private boolean isPaused;
-	private boolean notDead;
+	private boolean isAlive;
 	private boolean notQuit;
 	private long clipTime;
 	private AudioInputStream ais;
@@ -24,29 +24,29 @@ public class Stage extends JPanel implements ActionListener{
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
 	private ArrayList<Sun> sunList;
-
+	private GamePanel game;
 	private Image background;
 	private URL url;
 	private Timer timer;
-	public Stage(){
+	public Stage(GamePanel game){
 		this.setLayout(null);
 		this.background=this.loadImage("sprites/menus/backdrop.png");
 		this.setPreferredSize(new Dimension(1000, 500));
 		this.notQuit=true;
-		this.notDead=true;
+		this.isAlive=true;
 		this.isPaused=false;
+		this.game=game;
 		try{ // for sound
 			this.url = new URL("file:audio/pvzBG1.wav");
 			this.clip = AudioSystem.getClip();
 			this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
 		this.playBG(this.clip); // for sound
-		this.particleList=new ArrayList<Particle>();
-		this.zombieList=new ArrayList<Zombie>();
 		this.plantList=new ArrayList<Plant>();
 		this.sunList=new ArrayList<Sun>();
+		this.particleList=new ArrayList<Particle>();
+		this.zombieList=new ArrayList<Zombie>();
 		this.timer=new Timer(4,this);
-		this.addSun(new Sun(500,400,this));
 		this.timer.start();
 	}
 	//getters/checkers
@@ -113,7 +113,6 @@ public class Stage extends JPanel implements ActionListener{
 	public void clearDeadZombie(Zombie zombie){
 		this.remove(zombie);
 		this.zombieList.remove(zombie);
-
 	}
 	//removes particles that hit
 	public void clearDeadParticle(Particle particle){
@@ -165,11 +164,39 @@ public class Stage extends JPanel implements ActionListener{
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		} catch(Exception e) {}	 
 	}
-	//after loading the game revert the notQuit status to true
-	public void resetnotQuit(){
-		this.notQuit=true;
-	}
 	
+
+
+	public void moveParticles(){
+		for(int i=0;i<this.particleList.size();i+=1){
+			this.particleList.get(i).move();
+		}
+	}
+	public void shootPlants(){
+		for(int i=0;i<this.plantList.size();i+=1){
+			this.plantList.get(i).shoot();
+		}
+	}
+	public GamePanel getGamePanel(){
+		return this.game;
+	}
+	public void terminate(){
+		this.pause();
+		this.isAlive=false;
+		this.game.getMenu().showGameOver();
+		this.timer.stop();
+	}
+	public boolean getIsAlive(){
+		return this.isAlive;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e){
+		if(e.getSource()==this.timer&&this.notQuit&&!this.isPaused){
+			this.shootPlants();
+			this.moveParticles();
+			this.repaint();// this will call at every 1 second
+		}
+	}
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -187,26 +214,6 @@ public class Stage extends JPanel implements ActionListener{
 				int y = i * 100;
 				g2.drawLine(0, y, getSize().width, y);
 			}
-		}
-	}
-
-	public void moveParticles(){
-		for(int i=0;i<this.particleList.size();i+=1){
-			this.particleList.get(i).move();
-		}
-	}
-	public void shootPlants(){
-		for(int i=0;i<this.plantList.size();i+=1){
-			this.plantList.get(i).shoot();
-		}
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e){
-		if(e.getSource()==this.timer&&this.notQuit&&!this.isPaused){
-			this.shootPlants();
-			this.moveParticles();
-			this.repaint();// this will call at every 1 second
 		}
 	}
 }

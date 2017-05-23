@@ -1,12 +1,11 @@
 package pvz;
 import java.awt.Rectangle;
-import java.net.*;
 import java.awt.event.*;
 import javax.swing.Timer;
 
 public class CherryBomb extends Plant implements ActionListener{
 	public CherryBomb(int xPos, int yPos, Stage stage){
-		super(xPos,yPos,100,100,TOUGHNESS_INFINITE,"sprites/plants/CherryBomb_Idle.gif","audio/CherryBomb.wav",stage);
+		super(xPos,yPos,100,100,TOUGHNESS_INFINITE,"sprites/plants/CherryBomb.gif","audio/CherryBomb.wav",stage);
 		this.actionSpd=2000;
 		this.timer= new Timer(this.actionSpd,this);
 	}
