@@ -9,11 +9,6 @@ public class PeaShooter extends Plant implements ActionListener{
 		super(xPos,yPos,100,100,TOUGHNESS_NORMAL,"sprites/plants/Peashooter_Idle.gif","audio/peaShooter.wav",stage);
 		this.actionSpd=1500;
 		this.timer=new Timer(this.actionSpd,this);
-		this.plantvar=new PlantVar(hp, actionSpd, xPos, yPos, width, height, isAlive, cliptime, "PeaShooter",imageLocation ,audioLocation);
-	}
-	public PeaShooter(PlantVar plantvar,Stage stage){
-		super(plantvar,stage);
-		this.timer=new Timer(this.actionSpd,this);
 	}
 
 	public void shoot(){ //create peas until dead

@@ -72,7 +72,6 @@ public class Sprite extends JPanel{
 	//changes the image
 	public void changeIcon(String imageLocation){
 		this.imageLocation=imageLocation;
-		System.out.println(this.imageLocation);
 		this.image=this.loadImage(this.imageLocation);
 	}
 	//updates the rectangle

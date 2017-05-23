@@ -8,7 +8,6 @@ public class Particle extends Sprite implements ActionListener{
 	protected boolean isActive;
 	protected int speed;
 	protected Stage stage;
-	protected ParticleVar particlevar;
 	private Timer timer;
 	public Particle(int xPos, int yPos, int width, int height, int damage, int speed, String imageLocation, String audiolocation, String type, Stage stage){
 		super(xPos, yPos, width, height, imageLocation, audiolocation);
@@ -17,18 +16,8 @@ public class Particle extends Sprite implements ActionListener{
 		this.timer=new Timer(this.speed,this);
 		this.isActive=true;
 		this.stage=stage;
-		this.particlevar=new ParticleVar(damage,speed,xPos,yPos,width,height,isActive,imageLocation,audioLocation,type);
 	}
-	public Particle(ParticleVar particlevar, Stage stage){
-		super(particlevar.getXPos(),particlevar.getYPos(),particlevar.getWidth(),particlevar.getHeight(),particlevar.getImageLocation(),particlevar.getAudioLocation());
-		this.damage=particlevar.getDamage();
-		this.speed=particlevar.getSpeed();
-		this.timer=new Timer(this.speed,this);
-		this.isActive=particlevar.getIsActive();
-		this.stage=stage;
-		this.particlevar=particlevar;
-		this.suspendFlag=true;//paused during creation
-	}
+	
 	public int getDamage(){//return damge of particle
 		return this.damage;
 	}
@@ -37,7 +26,6 @@ public class Particle extends Sprite implements ActionListener{
 	}
 	protected void setStatus(){//change the status of particle to be deleted
 		this.isActive=false;
-		this.particlevar.setisActive(false);
 		this.stage.clearDeadParticle(this);
 	}
 
@@ -56,14 +44,10 @@ public class Particle extends Sprite implements ActionListener{
 			}
 		}
 	}
-	public ParticleVar getParticleVar(){
-		return this.particlevar;
-	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==this.timer){
 			if(this.isActive&&!this.suspendFlag){
 				this.xPos+=1;
-				this.particlevar.setXPos(this.xPos);
 				this.updateRectangle();
 				this.colissionCheck(stage.getZombieList());
 				if(this.xPos>this.width+1000){

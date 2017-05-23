@@ -29,27 +29,6 @@ public class GamePanel extends JPanel{
 			}
 		});
 		this.addMouseListener(new PlanterListener(this));
-		// this.addMouseListener(new MouseListener(){
-		// 	public void mousePressed(MouseEvent e) {}
-		// 	public void mouseReleased(MouseEvent e) {}
-		// 	public void mouseEntered(MouseEvent e) {}
-		// 	public void mouseExited(MouseEvent e) {}
-		// 	public void mouseClicked(MouseEvent e) {
-		// 		int row=myPos/100;
-		// 		int col=mxPos/100;
-		// 		row-=1;
-		// 		if(row>=0){
-		// 			Plant plant=new PeaShooter(col*100,row*100,stage);
-		// 			if(stage.checkSpace(plant)&&!stage.getStatus()){
-		// 				System.out.println("Plant added");
-		// 				stage.addPlant(plant);
-		// 			}else{
-		// 				System.out.println("C"+col*100);
-		// 				System.out.println("R"+row*100);
-		// 			}
-		// 		}
-		// 	}	
-		// });
 	}
 	//getters
 	public Menu getMenu(){

@@ -14,6 +14,7 @@ import javax.swing.Timer;
 import java.awt.event.*;
 
 public class Stage extends JPanel implements ActionListener{
+	private int sun;
 	private boolean isPaused;
 	private boolean notDead;
 	private boolean notQuit;
@@ -23,6 +24,8 @@ public class Stage extends JPanel implements ActionListener{
 	private ArrayList<Particle> particleList;
 	private ArrayList<Zombie> zombieList;
 	private ArrayList<Plant> plantList;
+	private ArrayList<Sun> sunList;
+
 	private Image background;
 	private URL url;
 	private Timer timer;
@@ -39,16 +42,17 @@ public class Stage extends JPanel implements ActionListener{
 			this.ais = AudioSystem.getAudioInputStream(this.url);   
 		}catch(Exception e){}
 		this.playBG(this.clip); // for sound
-		particleList=new ArrayList<Particle>();
-		zombieList=new ArrayList<Zombie>();
-		plantList=new ArrayList<Plant>();
+		this.particleList=new ArrayList<Particle>();
+		this.zombieList=new ArrayList<Zombie>();
+		this.plantList=new ArrayList<Plant>();
+		this.sunList=new ArrayList<Sun>();
 		this.timer=new Timer(4,this);
 		this.addZombie(new Zombie(1000,100,this));
 		this.addZombie(new Zombie(1000,200,this));
 		this.addZombie(new Zombie(1000,400,this));
-		// Thread threadZCreator=new Thread(new ZombieCreator(this));
-		// threadZCreator.start();
-		timer.start();
+		this.addSun(new Sun(500,400,this));
+
+		this.timer.start();
 	}
 	//getters/checkers
 	public boolean getStatus(){
@@ -89,16 +93,12 @@ public class Stage extends JPanel implements ActionListener{
 	//adds plant
 	public void addPlant(Plant plant){
 		this.plantList.add(plant);
-		// Thread threadTemp=new Thread(plant);
 		this.add(plant);
-		// threadTemp.start();
 	}
 	//adds particles
 	public void addParticle(Particle particle){
 		this.particleList.add(particle);
-		// Thread threadTemp=new Thread(particle);
 		this.add(particle);
-		// threadTemp.start();
 	}
 	//adds zombies
 	public void addZombie(Zombie zombie){
@@ -106,6 +106,10 @@ public class Stage extends JPanel implements ActionListener{
 		Thread threadTemp=new Thread(zombie);
 		this.add(zombie);
 		threadTemp.start();
+	}
+	public void addSun(Sun sun){
+		this.sunList.add(sun);
+		this.add(sun);
 	}
 	//removes dead zombie
 	public void clearDeadZombie(Zombie zombie){
@@ -123,7 +127,10 @@ public class Stage extends JPanel implements ActionListener{
 	public void clearDeadPlants(Plant plant){
 		this.remove(plant);
 		this.plantList.remove(plant);
-
+	}
+	public void clearDeadSuns(Sun sun){
+		this.remove(sun);
+		this.sunList.remove(sun);
 	}
 	//pauses the game
 	//sets the suspenFlag of all elements to true
@@ -198,6 +205,10 @@ public class Stage extends JPanel implements ActionListener{
 		for(int i=0;i<this.plantList.size();i+=1){
 			this.plantList.get(i).shoot();
 		}
+	}
+	public void addSun(){
+		this.sun+=25;
+		System.out.println(this.sun);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e){

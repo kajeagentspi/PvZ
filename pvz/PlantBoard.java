@@ -10,6 +10,7 @@ public class PlantBoard extends JPanel{
 	private JLabel yPos=new JLabel("y: ");
 	private GamePanel game;
 	private String plantActive;
+
 	public PlantBoard(GamePanel game){
 		this.game=game;
 		this.setPreferredSize(new Dimension(1000, 100));
@@ -18,6 +19,7 @@ public class PlantBoard extends JPanel{
 		this.setLocation(0,0);
 		JButton plause=new JButton("Pause");
 		JButton gotoMenu =new JButton("Go To Main Menu");
+		JLabel sun=new JLabel("0");
 		//update
 		JButton peashootercard=new JButton("Peashooter");
 		JButton cherrybombcard=new JButton("CherryBomb");
@@ -31,6 +33,7 @@ public class PlantBoard extends JPanel{
 		this.add(repeatercard);
 		this.add(xPos);
 		this.add(yPos);
+
 		gotoMenu.addActionListener(new GoToMenuListener(game));
 		peashootercard.addActionListener(new CardButtonListener(this,"PeaShooter"));
 		cherrybombcard.addActionListener(new CardButtonListener(this,"CherryBomb"));
@@ -47,17 +50,7 @@ public class PlantBoard extends JPanel{
 					game.getStage().resume();
 				}
 			}
-		});
-		// gotoMenu.addActionListener(new ActionListener(){
-		// 	public void actionPerformed(ActionEvent e){
-		// 		if(!game.getStage().getStatus()){
-		// 			game.getStage().setStatus();
-		// 			game.getStage().pause();
-		// 		}game.getStage().setStatus();
-		// 		game.getMenu().saveGame();
-		// 		game.getMenu().showMenu();
-		// 	}
-		// });	
+		});	
 	}
 		//temporary code
 	public void showCoords(int mxPos,int myPos){
@@ -71,4 +64,5 @@ public class PlantBoard extends JPanel{
 	public String getPlantActive(){
 		return this.plantActive;
 	}
+	
 }

@@ -9,12 +9,6 @@ public class CherryBomb extends Plant implements ActionListener{
 		super(xPos,yPos,100,100,TOUGHNESS_INFINITE,"sprites/plants/CherryBomb_Idle.gif","audio/CherryBomb.wav",stage);
 		this.actionSpd=2000;
 		this.timer= new Timer(this.actionSpd,this);
-		this.plantvar=new PlantVar(hp, actionSpd, xPos, yPos, width, height, isAlive, cliptime, "CherryBomb", imageLocation ,audioLocation);
-	}
-
-	public CherryBomb(PlantVar plantvar,Stage stage){
-		super(plantvar,stage);
-		this.timer= new Timer(this.actionSpd,this);
 	}
 	public void shoot(){
 		this.timer.start();
