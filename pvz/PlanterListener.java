@@ -24,7 +24,7 @@ public class PlanterListener implements MouseListener{
 		int col=this.mxPos/100;
 		this.plantActive=game.getPboard().getPlantActive();
 		row-=1;
-		if(row>=0&&this.plantActive!=null){
+		if(row>=0&&col>0&&this.plantActive!=null){
 			Plant plant=null;
 			switch(this.plantActive){
 				case "PeaShooter":

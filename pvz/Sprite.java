@@ -72,7 +72,8 @@ public class Sprite extends JPanel{
 	//changes the image
 	public void changeIcon(String imageLocation){
 		this.imageLocation=imageLocation;
-		this.loadImage(this.imageLocation);
+		System.out.println(this.imageLocation);
+		this.image=this.loadImage(this.imageLocation);
 	}
 	//updates the rectangle
 	protected void updateRectangle(){
@@ -88,7 +89,6 @@ public class Sprite extends JPanel{
 	}
 	//plays the audioclip
 	public void soundComponent(Clip clip) {
-		System.out.println("play");
 		try {
 			if(clip.isRunning()){
 				clip.stop();
