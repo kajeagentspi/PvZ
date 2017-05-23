@@ -6,11 +6,15 @@ import java.awt.event.*;
 public class GamePanel extends JPanel{
 	private int mxPos;
 	private int myPos;
+	private int level;
+	private int zombiesKilled;
 	private Stage stage;
 	private PlantBoard pboard;
 	private Menu menu;
+	private ZombieCreator zombieCreator;
 	public GamePanel(Menu menu){
 		this.menu=menu;
+		this.level=1;
 		this.setPreferredSize(new Dimension(1000,600));
 		this.setLayout(new BorderLayout());
 		this.stage=new Stage();
@@ -19,6 +23,7 @@ public class GamePanel extends JPanel{
 		this.add(this.pboard,BorderLayout.NORTH);
 		this.requestFocus();
 		this.addKeyListener(new PauseListener(this.stage));
+		this.zombieCreator=new ZombieCreator(this.stage,this.level);
 		//get coords
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent me){
@@ -29,6 +34,7 @@ public class GamePanel extends JPanel{
 		});
 		this.addMouseListener(new PlanterListener(this));
 		this.addMouseListener(new SunListener(this));
+		this.zombieCreator.getTimer().start();
 	}
 	//getters
 	public Menu getMenu(){
@@ -45,5 +51,8 @@ public class GamePanel extends JPanel{
 	}
 	public int getmyPos(){
 		return this.myPos;
-	} 
+	}
+	public ZombieCreator getZombieCreator(){
+		return this.zombieCreator;
+	}
 }

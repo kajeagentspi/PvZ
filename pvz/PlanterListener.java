@@ -40,11 +40,18 @@ public class PlanterListener implements MouseListener{
 				case "WallNut":
 					plant=new WallNut(col*100,row*100,this.stage);
 					break;
+				case "Shovel":
+					plant=new Shovel(col*100,row*100,this.stage);
 			}
 			if(plant!=null){
 				if(this.stage.checkSpace(plant)&&!this.stage.getStatus()){
 					System.out.println("Plant added");
 					this.stage.addPlant(plant);
+					this.game.getPboard().setPlantActive(null);
+				}else if(!this.stage.getStatus()&&this.plantActive=="Shovel"){
+					System.out.println("Plant removed");
+					this.stage.addPlant(plant);
+					this.game.getPboard().setPlantActive(null);
 				}else{
 					System.out.println("C"+col*100);
 					System.out.println("R"+row*100);

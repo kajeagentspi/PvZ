@@ -19,7 +19,7 @@ public class PotatoMine extends Plant implements ActionListener{
 		if(e.getSource()==this.timer){
 			this.active=true;
 			if(this.active){
-				this.changeIcon("sprites/plants/PotatoMine_Activating.gif");				
+				this.changeIcon("sprites/plants/PotatoMine_Activating.gif");			
 				for(int i=this.stage.getZombieList().size()-1; i>=0;i-=1){
 					if(this.getRectangle().intersects(stage.getZombieList().get(i).getRectangle())){
 						this.stage.getZombieList().get(i).damaged(DAMAGE_HEAVY);

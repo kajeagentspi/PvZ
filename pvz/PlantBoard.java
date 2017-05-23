@@ -2,7 +2,6 @@ package pvz;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serializable;
 import java.net.URL;
 
 //BETA
@@ -28,25 +27,31 @@ public class PlantBoard extends JPanel{
 		JButton potatominecard=new JButton();
 		JButton repeatercard=new JButton();
 		JButton wallnutcard=new JButton();
+		JButton shovelcard=new JButton();
+
 
 		this.loadIcon(peashootercard,"sprites/cardbuttons/PeaShooter.png");
 		this.loadIcon(cherrybombcard,"sprites/cardbuttons/CherryBomb.png");
 		this.loadIcon(potatominecard,"sprites/cardbuttons/PotatoMine.png");
 		this.loadIcon(wallnutcard,"sprites/cardbuttons/WallNut.png");
 		this.loadIcon(repeatercard,"sprites/cardbuttons/Repeater.png");
+		this.loadIcon(shovelcard,"sprites/cardbuttons/Shovel.png");
+
 
 		this.add(sunLabel);
-		this.add(plause);
-		this.add(gotoMenu);
+		
 		
 		this.add(peashootercard);
 		this.add(cherrybombcard);
 		this.add(wallnutcard);
 		this.add(potatominecard);
 		this.add(repeatercard);
+		this.add(shovelcard);
 
 		this.add(xPos);
 		this.add(yPos);
+		this.add(plause);
+		this.add(gotoMenu);
 
 		gotoMenu.addActionListener(new GoToMenuListener(game));
 		peashootercard.addActionListener(new CardButtonListener(this,"PeaShooter"));
@@ -54,21 +59,24 @@ public class PlantBoard extends JPanel{
 		potatominecard.addActionListener(new CardButtonListener(this,"PotatoMine"));
 		wallnutcard.addActionListener(new CardButtonListener(this,"WallNut"));
 		repeatercard.addActionListener(new CardButtonListener(this,"Repeater"));
+		shovelcard.addActionListener(new CardButtonListener(this,"Shovel"));
 		plause.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(!game.getStage().getStatus()){
 					game.getStage().setStatus();
 					game.getStage().pause();
+					game.getZombieCreator().getTimer().stop();
 				}
 				else if(game.getStage().getStatus()){
 					game.getStage().setStatus();
 					game.getStage().resume();
+					game.getZombieCreator().getTimer().start();
 				}
 			}
 		});	
 	}
-	public void loadCards(){
-
+	public void setplantActive(String plantActive){
+		this.plantActive=plantActive;
 	}
 	public void showCoords(int mxPos,int myPos){
 		this.xPos.setText("x: "+mxPos);

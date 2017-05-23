@@ -3,7 +3,6 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
 
  // for sounds
@@ -47,9 +46,6 @@ public class Stage extends JPanel implements ActionListener{
 		this.plantList=new ArrayList<Plant>();
 		this.sunList=new ArrayList<Sun>();
 		this.timer=new Timer(4,this);
-		this.addZombie(new Zombie(1000,100,this));
-		this.addZombie(new Zombie(1000,200,this));
-		this.addZombie(new Zombie(1000,400,this));
 		this.addSun(new Sun(500,400,this));
 		this.timer.start();
 	}
