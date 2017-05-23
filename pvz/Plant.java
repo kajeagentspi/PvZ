@@ -54,6 +54,7 @@ public abstract class Plant extends Sprite{
 	private void setStatus(){
 		this.isAlive=false;
 		plantvar.setisAlive(this.isAlive);
+		this.timer.stop();
 		this.stage.clearDeadPlants(this);
 	}
 	public abstract void shoot();

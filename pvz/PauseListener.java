@@ -1,7 +1,5 @@
 package pvz;
 import java.awt.event.*;
-import java.io.Serializable;
-
 
 public class PauseListener implements KeyListener{
 	private Stage stage;
