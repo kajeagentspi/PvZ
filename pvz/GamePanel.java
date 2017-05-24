@@ -29,7 +29,6 @@ public class GamePanel extends JPanel{
 		this.addKeyListener(new PauseListener(this));
 		this.zombieCreator=new ZombieCreator(this.stage,this.level);
 		this.sunCreator=new SunCreator(this.stage);
-
 		//get coords
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent me){
